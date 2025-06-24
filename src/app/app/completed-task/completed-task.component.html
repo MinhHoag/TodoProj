@@ -1,0 +1,26 @@
+
+<div class="input-wrapper">
+  <button (click)="reinsert()" class="add-button">Reinsert Checked</button>
+  <button (click)="clearAll()" class="remove-button">Clear All</button>
+</div>
+
+
+<ul id="task-list" class="container">
+  <div>Total completed: <span class="task-length">{{ tasks.length }}</span></div>
+
+  <li *ngFor="let task of tasks" class="adding">
+    <div class="task-content">
+    <input
+      type="checkbox"
+      [(ngModel)]="task.checked"
+    />
+    <span [class.completed]="task.checked">{{ task.text }}</span>
+    <button (click)="remove(task)" class="remove-button">X</button></div>
+  </li>
+</ul>
+
+
+<nav>
+  <a routerLink="/task-list">⬅ Back to Task List</a>
+
+</nav>

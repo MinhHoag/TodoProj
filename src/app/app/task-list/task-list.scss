@@ -1,0 +1,203 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fafafa;
+  padding: 20px;
+}
+
+
+
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.input-row {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5);
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+
+
+.completed{
+  color: grey;
+  text-decoration: line-through;
+}
+
+
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+
+
+li.completed button.remove-button{
+  text-decoration: none !important;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid;
+  margin: 10px 0;
+  //font-family: Arial, sans-serif;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background-color: #ffffff;
+  transition: background 0.3s, transform 0.3s;
+
+}
+
+li:hover {
+  background-color: #f9f9f9;
+}
+
+
+.task-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+
+.completed {
+  color: grey;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+
+
+button.remove-button:hover {
+  background-color: #c5eaff;
+}
+
+button.remove-button {
+  background-color: #e2f4ff;
+  border: none;
+  padding: 4px 8px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-style: normal;
+  text-decoration: none !important;
+}
+
+
+
+.add-button.disabled {
+  background-color: #eee;
+  color: #999;
+  cursor: not-allowed !important;
+}
+
+
+
+.input-wrapper {
+  font-size: 12px;
+  display: flex;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 16px;
+  border: 1px solid #999;
+  border-radius: 8px;
+  overflow: hidden; /* make corners smooth and connected */
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.input-wrapper input[type="text"] {
+  flex: 1;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  outline: none;
+  border-radius: 0;
+}
+
+.input-wrapper .add-button {
+  background-color: #c8c5c5;
+  border: none;
+  padding: 0 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-left: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+.task-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px; /* optional: space between checkbox and text */
+  overflow: hidden;
+  padding-right: 7px;
+}
+
+.task-content span {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  flex: 1;
+}
+
+.input-wrapper .remove-button {
+  background-color: #c8c5c5;
+  border: none;
+  padding: 0 16px;
+  font-weight: bold;
+  font-style: italic ;
+  cursor: pointer;
+  border-left: 1.7px solid rgb(223, 218, 218);
+  font-size: 13px;
+  border-radius: 0;
+}
+
+.input-wrapper .add-button:hover:not(:disabled) {
+  background-color: #838080;
+}
+
+
+.nav {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.task-length {
+  font-weight: bold;
+}
+.edit-input {
+  flex: 1;
+  padding: 4px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
