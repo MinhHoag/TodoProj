@@ -1,0 +1,21 @@
+<span *ngIf="!editing"
+      (click)="startEdit()"
+      style="cursor: pointer; display: inline-block;">
+  {{ (displayValue ?? value) || placeholder }}
+</span>
+
+<!-- Hidden mirror span for measuring text width -->
+<span #mirror class="mirror-span">{{ localValue || placeholder || ' ' }}</span>
+
+<input *ngIf="editing"
+       #inputRef
+       class="inline-edit"
+       [type]="type"
+       [(ngModel)]="localValue"
+       [placeholder]="placeholder"
+       [min]="min"
+       [max]="max"
+       (input)="resizeInput()"
+       (blur)="submit()"
+       (keyup.enter)="submit()"
+       (keyup.escape)="cancel()" />

@@ -1,0 +1,32 @@
+<div class="pagination-controls">
+  <label>
+    Items per page:
+    <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+
+      <option [ngValue]="5">5</option>
+      <option [ngValue]="10">10</option>
+      <option [ngValue]="20">20</option>
+    </select>
+  </label>
+
+  <div class="page-info">
+    {{ start }}–{{ end }} of {{ totalItems }}
+  </div>
+  <div class="page-inline-edit">
+    <app-inline-edit
+      [value]="currentPage"
+      type="number"
+      [min]="1"
+      [max]="totalPages"
+      (valueChange)="goToPage($event)">
+    </app-inline-edit>
+    <span>of {{ totalPages }}</span>
+
+  </div>
+
+
+  <div class="page-buttons">
+    <button (click)="changePage(-1)" [disabled]="currentPage === 1">←</button>
+    <button (click)="changePage(1)" [disabled]="currentPage === totalPages">→</button>
+  </div>
+</div>

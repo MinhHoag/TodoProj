@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgForOf } from '@angular/common';
-import { TaskService } from './helper/task.service';
-import { Task } from './helper/task.model';
+import { TaskService } from '../../helper/task.service';
+import { Task } from '../../helper/task.model';
 import { RouterModule } from '@angular/router';
+import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
+import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
 
 
 @Component({
@@ -11,13 +13,26 @@ import { RouterModule } from '@angular/router';
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.scss'],
   standalone: true,
-  imports: [FormsModule, NgForOf, RouterModule],
+  imports: [FormsModule, NgForOf, RouterModule, PaginationComponent, InlineEditComponent],
 })
 export class TaskListComponent {
   newTaskText = '';
-  editingTask: Task | null = null;
-  editedText: string = '';
+
+
+
   constructor(public taskService: TaskService) {}
+  currentlyEditingId: string | null = null;
+  currentPage = 1;
+  pageSize = 5;
+  get pagedTasks(): Task[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.tasks.slice(start, start + this.pageSize);
+  }
+
+  onPageChange(event: { page: number; pageSize: number }) {
+    this.currentPage = event.page;
+    this.pageSize = event.pageSize;
+  }
 
   get tasks(): Task[] {
     return this.taskService.getTasks();
@@ -45,6 +60,18 @@ export class TaskListComponent {
     this.taskService.clearAll();
   }
 
+  updateTaskText(task: Task, newText: string | number): void {
+    this.taskService.updateTaskText(task, String(newText));
+  }
+
+
+
+  onEditStart(taskId: string) {
+    // Triggered when an inline editor is clicked
+    this.currentlyEditingId = taskId;
+  }
+
+
   onCheckboxChange(event: Event, task: Task): void {
     const checkbox = event.target as HTMLInputElement;
     this.taskService.updateTaskChecked(task, checkbox.checked);
@@ -52,18 +79,7 @@ export class TaskListComponent {
 
 
 
-  startEdit(task: Task) {
-    this.editingTask = task;
-    this.editedText = task.text;
-  }
 
-  confirmEdit(task: Task) {
-    const trimmed = this.editedText.trim();
-    if (trimmed && trimmed !== task.text) {
-      task.text = trimmed;
-    }
-    this.editingTask = null;
-  }
 
 
 

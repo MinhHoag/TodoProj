@@ -1,5 +1,5 @@
 // task.utils.ts
-import { Task } from './task.model';
+import {Task} from './task.model';
 
 export function clearCompletedTasks(tasks: Task[]): Task[] {
   return tasks.filter(task => !task.checked);

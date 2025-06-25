@@ -1,0 +1,41 @@
+.pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  margin-top: 16px;
+}
+
+.pagination-controls select {
+  padding: 4px 8px;
+}
+
+.page-buttons button {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.page-buttons button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-info {
+  min-width: 100px;
+  text-align: center;
+}
+.page-inline-edit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-inline-edit input {
+  width: 40px;
+  padding: 2px;
+  font-size: inherit;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

@@ -1,0 +1,28 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+
+.inline-edit {
+  font: inherit;
+  padding: 2px 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  outline: none;
+  width: auto;
+  min-width: 1em;
+  box-sizing: content-box;
+}
+
+.mirror-span {
+  max-width: 200px;
+  width: auto;
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  font: inherit;
+  padding: 2px 4px;
+  box-sizing: content-box;
+}

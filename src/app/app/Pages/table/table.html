@@ -1,0 +1,35 @@
+<nav><a routerLink="/task-list">Home</a><a routerLink="/completed-task">Completed Tasks</a><a routerLink="/table">Table</a></nav>
+
+<div class="fixed-pagination"><app-pagination
+  [totalItems]="tasks.length"
+  [pageSize]="pageSize"
+  [currentPage]="currentPage"
+  (pageChange)="onPageChange($event)">
+</app-pagination></div>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Text</th>
+    <th>Checked</th>
+    <th>Created At</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let task of pagedTasks">
+    <td>{{ task.id }}</td>
+    <td>
+      <app-inline-edit
+        [value]="task.text"
+        (valueChange)="onTaskTextChange(task, $event)">
+      </app-inline-edit>
+    </td>
+
+    <td>{{ task.checked ? '✅' : '❌' }}</td>
+    <td>{{ task.createdAt * 1000 | date: 'dd/MM/yyyy HH:mm' }}</td>
+  </tr>
+  </tbody>
+</table>
+
+
+

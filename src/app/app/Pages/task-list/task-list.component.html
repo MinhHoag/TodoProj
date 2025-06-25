@@ -1,0 +1,57 @@
+<nav><a routerLink="/task-list">Home</a><a routerLink="/completed-task">Completed Tasks</a><a
+  routerLink="/table">Table</a></nav>
+
+<div class="input-wrapper">
+  <input
+    [(ngModel)]="newTaskText"
+    (keydown.enter)="addTask()"
+    placeholder="Add task"
+    type="text"
+  />
+  <button (click)="addTask()"
+          class="add-button"
+          [disabled]="isAddDisabled"
+          [class.disabled]="isAddDisabled">Add
+  </button>
+
+  <button (click)=clearAllTasks() class="remove-button">Clear all</button>
+  <button (click)=clearCompletedTasks() class="remove-button">Clear completed</button>
+
+</div>
+
+
+
+<div style="display: flex; justify-content:center; margin-bottom: 23px ">
+  <app-pagination
+    [totalItems]="tasks.length"
+    [pageSize]="pageSize"
+    [currentPage]="currentPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>
+<ul id="task-list" class="container">
+  <div>Total tasks: <span class="task-length">{{ tasks.length }}</span>
+  </div>
+  <li *ngFor="let task of pagedTasks" class="adding">
+    <div class="task-content">
+      <input type="checkbox" [(ngModel)]="task.checked" (change)="onCheckboxChange($event, task)" />
+
+      <app-inline-edit
+        [value]="task.text"
+        (valueChange)="updateTaskText(task, $event)">
+      </app-inline-edit>
+    </div>
+
+    <button (click)="removeTask(task)" class="remove-button">X</button>
+  </li>
+
+
+
+</ul>
+
+
+
+
+
+
+

@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { TaskListComponent } from './app/task-list/task-list.component';
-import { CompletedTaskComponent } from './app/completed-task/completed-task.component';
-import {Table} from './app/table/table';
+import { TaskListComponent } from './app/Pages/task-list/task-list.component';
+import { CompletedTaskComponent } from './app/Pages/completed-task/completed-task.component';
+import {TaskTableComponent} from './app/Pages/table/table';
 
 export const routes: Routes = [
   { path: 'task-list', component: TaskListComponent },
   { path: '', redirectTo: 'task-list', pathMatch: 'full' },
   { path: 'completed-task', component: CompletedTaskComponent },
-  { path: 'table', component: Table },
+  { path: 'table', component: TaskTableComponent },
 ];

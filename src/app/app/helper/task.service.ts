@@ -37,6 +37,10 @@ export class TaskService {
     this.completedTasks = [];
   }
 
+  updateTaskText(task: Task, newText: string): void {
+    task.text = newText;
+  }
+
 
   getCompletedTasks(): Task[] {
     return this.completedTasks;
