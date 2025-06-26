@@ -8,6 +8,7 @@ import {PaginationComponent} from '../../reuse-components/pagination/pagination.
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
 import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
 import {MatButton} from '@angular/material/button';
+import {HeaderComponent} from '../../navigation/header/header';
 
 
 @Component({
@@ -15,7 +16,7 @@ import {MatButton} from '@angular/material/button';
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.scss'],
   standalone: true,
-  imports: [FormsModule, NgForOf, RouterModule, PaginationComponent, InlineEditComponent, MatButton],
+  imports: [FormsModule, NgForOf, RouterModule, PaginationComponent, InlineEditComponent, HeaderComponent],
 })
 export class TaskListComponent {
   newTaskText = '';
@@ -71,6 +72,14 @@ export class TaskListComponent {
           this.taskService.clearAll();
         }
       });
+  }
+
+  onEnter(input: HTMLInputElement): void {
+    if (this.isAddDisabled) {
+      input.select(); // ✅ highlight all text in the input box
+    } else {
+      this.addTask();
+    }
   }
 
 

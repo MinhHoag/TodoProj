@@ -6,6 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
 import {RouterLink} from '@angular/router';
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
+import {HeaderComponent} from '../../navigation/header/header';
 
 @Component({
   selector: 'app-task-table',
@@ -18,7 +19,8 @@ import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edi
     FormsModule,
     PaginationComponent,
     RouterLink,
-    InlineEditComponent
+    InlineEditComponent,
+    HeaderComponent
   ]
 })
 export class TaskTableComponent implements OnInit {

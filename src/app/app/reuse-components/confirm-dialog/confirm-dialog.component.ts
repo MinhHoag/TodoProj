@@ -7,15 +7,18 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.scss'],
   imports: [
     MatDialogActions,
     MatDialogTitle,
     MatDialogContent,
-    MatButton
+    MatButton,
+    FormsModule
   ]
 })
 export class ConfirmDialogComponent {

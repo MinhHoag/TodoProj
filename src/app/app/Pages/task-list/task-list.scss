@@ -122,7 +122,7 @@ button.remove-button {
   display: flex;
   width: 100%;
   max-width: 480px;
-  margin: 0 auto 16px;
+  margin: 16px auto 0;
   border: 1px solid #999;
   border-radius: 8px;
   overflow: hidden; /* make corners smooth and connected */

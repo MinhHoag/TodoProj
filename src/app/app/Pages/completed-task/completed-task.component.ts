@@ -4,13 +4,14 @@ import {TaskService} from '../../helper/task.service';
 import {Component} from '@angular/core';
 import {Task} from '../../helper/task.model';
 import {RouterLink} from '@angular/router';
+import {HeaderComponent} from '../../navigation/header/header';
 
 @Component({
   selector: 'app-completed-task',
   standalone: true,
   templateUrl: './completed-task.component.html',
   styleUrls: ['./completed-task.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent],
 })
 export class CompletedTaskComponent {
   constructor(public taskService: TaskService) {
