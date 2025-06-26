@@ -30,12 +30,16 @@ export class InlineEditComponent {
   editing = false;
   localValue: string | number = '';
   resizeInput() {
-    const mirrorEl = this.mirror?.nativeElement;
-    const inputEl = this.inputRef?.nativeElement;
-    if (mirrorEl && inputEl) {
-      inputEl.style.width = mirrorEl.offsetWidth + '1';
-    }
+    setTimeout(() => {
+      const mirrorEl = this.mirror?.nativeElement;
+      const inputEl = this.inputRef?.nativeElement;
+      if (mirrorEl && inputEl) {
+        const textWidth = mirrorEl.offsetWidth;
+        inputEl.style.width = `${textWidth + 8}px`; // Add buffer to match padding (4px + 4px)
+      }
+    });
   }
+
 
   startEdit() {
     if(!this.isChecked) {

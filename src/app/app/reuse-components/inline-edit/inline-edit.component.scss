@@ -3,7 +3,6 @@
   position: relative;
 }
 
-
 .inline-edit {
   font: inherit;
   padding: 2px 4px;
@@ -14,20 +13,21 @@
   width: auto;
   min-width: 1em;
   box-sizing: content-box;
-}
 
+}
+.inline-edit.completed{
+  text-decoration: line-through;
+}
 .mirror-span {
-  max-width: 200px;
-  width: auto;
   position: absolute;
   visibility: hidden;
   white-space: pre;
   font: inherit;
-  padding: 2px 4px;
   box-sizing: content-box;
-}
-.completed {
-  text-decoration: line-through;
-  color: gray;
-  opacity: 0.6;
+
+
+  padding: 0;
+  border: none;
+  max-width: none;
+  width: auto;
 }

@@ -18,7 +18,7 @@ import {HeaderComponent} from '../../navigation/header/header';
     CommonModule,
     FormsModule,
     PaginationComponent,
-    RouterLink,
+
     InlineEditComponent,
     HeaderComponent
   ]

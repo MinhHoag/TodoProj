@@ -4,8 +4,12 @@
       style="cursor: pointer; display: inline-block;">
   {{ (displayValue ?? value) || placeholder }}</span>
 
-<!-- Hidden mirror span for measuring text width -->
-<span #mirror class="mirror-span">{{ localValue || placeholder || ' ' }}</span>
+
+<span #mirror class="mirror-span">
+  {{ (localValue || placeholder || 'X') + (type === 'number' ? '\u2002Z' : '') }}
+</span>
+
+
 
 <input *ngIf="editing"
        #inputRef
@@ -18,4 +22,5 @@
        (input)="resizeInput()"
        (blur)="submit()"
        (keyup.enter)="submit()"
-       (keyup.escape)="cancel()" />
+       (keyup.escape)="cancel()"
+        />

@@ -14,11 +14,11 @@
           [class.disabled]="isAddDisabled">Add
   </button>
 
-  <button (click)="clearAllWithConfirm()"  class="remove-button">Clear all</button>
-  <button (click)=clearCompletedTasks() class="remove-button">Clear completed</button>
+
 
 </div>
-
+<button (click)="clearAllWithConfirm()"  class="clear-button">Clear all</button>
+<button (click)=clearCompletedTasks() class="clear-button">Clear completed</button>
 
 
 <div style="display: flex; justify-content:center; margin-bottom: 23px ">
@@ -30,16 +30,20 @@
   </app-pagination>
 </div>
 <ul id="task-list" class="container">
-  <div>Total tasks: <span class="task-length">{{ tasks.length }}</span>
+  <div>Total tasks: <span class="task-length">{{ tasks.length }}</span><span><button (click)="clearAllWithConfirm()"  class="clear-button">Clear all</button>
+<button (click)=clearCompletedTasks() class="clear-button">Clear completed</button>
+</span>
   </div>
-  <li *ngFor="let task of pagedTasks" class="adding">
+  <li *ngFor="let task of pagedTasks" class="adding" [class.complete]="task.checked">
     <div class="task-content">
       <input type="checkbox" [(ngModel)]="task.checked" (change)="onCheckboxChange($event, task)" />
 
       <app-inline-edit
         [value]="task.text"
         (valueChange)="updateTaskText(task, $event)"
-        [isChecked]= "task.checked">
+        [isChecked]= "task.checked"
+        [ngClass]="{ 'completed': task.checked }"
+        [class.completed]="task.checked">
       </app-inline-edit>
     </div>
 

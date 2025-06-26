@@ -17,6 +17,7 @@ body {
 
 
 
+
 .input-row {
   display: flex;
   margin-bottom: 12px;
@@ -43,6 +44,7 @@ input[type="checkbox"] {
   color: grey;
   text-decoration: line-through;
 }
+
 
 
 
@@ -166,16 +168,22 @@ button.remove-button {
   flex: 1;
 }
 
-.input-wrapper .remove-button {
-  background-color: #c8c5c5;
-  border: none;
-  padding: 0 16px;
-  font-weight: bold;
-  font-style: italic ;
-  cursor: pointer;
-  border-left: 1.7px solid rgb(223, 218, 218);
+.clear-button {
+  align: right;
+  background-color: rgba(237, 251, 255, 0);
   font-size: 13px;
-  border-radius: 0;
+  font-family: Arial  ;
+  font-weight: bold;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;cursor: pointer;
+  font-style: normal;
+  text-decoration: none !important;
+}
+.clear-button:hover {
+  background-color: #c5eaff;
+
+  transition: background-color 0.5s ease;
 }
 
 .input-wrapper .add-button:hover:not(:disabled) {
@@ -207,6 +215,5 @@ nav a {
   color: gray;
   opacity: 0.6;
 }
-
 
 

@@ -46,6 +46,7 @@ export class TaskService {
     return this.completedTasks;
   }
 
+
   removeCompletedTask(task: Task): void {
     this.completedTasks = this.completedTasks.filter(t => t !== task);
   }

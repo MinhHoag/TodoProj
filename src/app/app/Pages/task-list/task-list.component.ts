@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgForOf } from '@angular/common';
+import {NgClass, NgForOf} from '@angular/common';
 import { TaskService } from '../../helper/task.service';
 import { Task } from '../../helper/task.model';
 import { RouterModule } from '@angular/router';
@@ -16,7 +16,7 @@ import {HeaderComponent} from '../../navigation/header/header';
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.scss'],
   standalone: true,
-  imports: [FormsModule, NgForOf, RouterModule, PaginationComponent, InlineEditComponent, HeaderComponent],
+  imports: [FormsModule, NgForOf, RouterModule, PaginationComponent, InlineEditComponent, HeaderComponent, NgClass],
 })
 export class TaskListComponent {
   newTaskText = '';
@@ -26,7 +26,7 @@ export class TaskListComponent {
   constructor(private confirm: ConfirmService, private taskService: TaskService) {}
 
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 10;
   get pagedTasks(): Task[] {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.tasks.slice(start, start + this.pageSize);
