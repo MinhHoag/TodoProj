@@ -18,11 +18,13 @@
       type="number"
       [min]="1"
       [max]="totalPages"
+      [placeholder]="'Click to edit page...'"
+      [displayValue]="'Page ' + currentPage"
       (valueChange)="goToPage($event)">
     </app-inline-edit>
     <span>of {{ totalPages }}</span>
-
   </div>
+
 
 
   <div class="page-buttons">

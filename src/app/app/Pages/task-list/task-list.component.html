@@ -14,7 +14,7 @@
           [class.disabled]="isAddDisabled">Add
   </button>
 
-  <button (click)=clearAllTasks() class="remove-button">Clear all</button>
+  <button (click)="clearAllWithConfirm()"  class="remove-button">Clear all</button>
   <button (click)=clearCompletedTasks() class="remove-button">Clear completed</button>
 
 </div>

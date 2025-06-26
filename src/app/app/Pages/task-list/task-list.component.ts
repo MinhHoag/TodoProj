@@ -6,6 +6,8 @@ import { Task } from '../../helper/task.model';
 import { RouterModule } from '@angular/router';
 import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
+import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
+import {MatButton} from '@angular/material/button';
 
 
 @Component({
@@ -13,15 +15,15 @@ import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edi
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.scss'],
   standalone: true,
-  imports: [FormsModule, NgForOf, RouterModule, PaginationComponent, InlineEditComponent],
+  imports: [FormsModule, NgForOf, RouterModule, PaginationComponent, InlineEditComponent, MatButton],
 })
 export class TaskListComponent {
   newTaskText = '';
 
 
 
-  constructor(public taskService: TaskService) {}
-  currentlyEditingId: string | null = null;
+  constructor(private confirm: ConfirmService, private taskService: TaskService) {}
+
   currentPage = 1;
   pageSize = 5;
   get pagedTasks(): Task[] {
@@ -56,20 +58,21 @@ export class TaskListComponent {
     this.taskService.clearCompleted();
   }
 
-  clearAllTasks(): void {
-    this.taskService.clearAll();
-  }
 
   updateTaskText(task: Task, newText: string | number): void {
     this.taskService.updateTaskText(task, String(newText));
   }
 
 
-
-  onEditStart(taskId: string) {
-    // Triggered when an inline editor is clicked
-    this.currentlyEditingId = taskId;
+  clearAllWithConfirm() {
+    this.confirm.open('Are you sure you want to clear all tasks?')
+      .subscribe(confirmed => {
+        if (confirmed) {
+          this.taskService.clearAll();
+        }
+      });
   }
+
 
 
   onCheckboxChange(event: Event, task: Task): void {
