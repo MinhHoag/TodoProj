@@ -20,6 +20,7 @@ export class InlineEditComponent {
   @Input() min?: number;
   @Input() max?: number;
   @Input() placeholder: string = '_____';
+  @Input() isChecked: boolean = false;
   @Input() displayValue?: string; // optional display override
   @ViewChild('mirror') mirror!: ElementRef;
   @ViewChild('inputRef') inputRef!: ElementRef;
@@ -28,7 +29,6 @@ export class InlineEditComponent {
 
   editing = false;
   localValue: string | number = '';
-
   resizeInput() {
     const mirrorEl = this.mirror?.nativeElement;
     const inputEl = this.inputRef?.nativeElement;
@@ -38,15 +38,16 @@ export class InlineEditComponent {
   }
 
   startEdit() {
-    this.localValue = this.value;
-    this.editing = true;
-    console.log('Switched to editing mode');
+    if(!this.isChecked) {
+      this.localValue = this.value;
+      this.editing = true;
+      console.log('Switched to editing mode');
 
-    setTimeout(() => {
-      this.resizeInput();
-      this.inputRef?.nativeElement.focus();
-      this.inputRef?.nativeElement.select();
-    });
+      setTimeout(() => {
+        this.resizeInput();
+        this.inputRef?.nativeElement.focus();
+        this.inputRef?.nativeElement.select();
+    })}
   }
 
 

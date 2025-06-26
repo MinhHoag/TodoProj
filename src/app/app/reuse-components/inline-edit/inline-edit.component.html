@@ -1,8 +1,8 @@
 <span *ngIf="!editing"
-      (click)="startEdit()"
+      (dblclick)="startEdit()"
+      [ngClass]="{ 'completed': isChecked }"
       style="cursor: pointer; display: inline-block;">
-  {{ (displayValue ?? value) || placeholder }}
-</span>
+  {{ (displayValue ?? value) || placeholder }}</span>
 
 <!-- Hidden mirror span for measuring text width -->
 <span #mirror class="mirror-span">{{ localValue || placeholder || ' ' }}</span>

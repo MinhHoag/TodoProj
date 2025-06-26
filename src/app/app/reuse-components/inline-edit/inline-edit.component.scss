@@ -26,3 +26,8 @@
   padding: 2px 4px;
   box-sizing: content-box;
 }
+.completed {
+  text-decoration: line-through;
+  color: gray;
+  opacity: 0.6;
+}

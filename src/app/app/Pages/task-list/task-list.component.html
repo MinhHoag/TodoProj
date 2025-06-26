@@ -38,7 +38,8 @@
 
       <app-inline-edit
         [value]="task.text"
-        (valueChange)="updateTaskText(task, $event)">
+        (valueChange)="updateTaskText(task, $event)"
+        [isChecked]= "task.checked">
       </app-inline-edit>
     </div>
 
