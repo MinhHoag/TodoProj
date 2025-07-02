@@ -1,7 +1,9 @@
 // task.model.ts
 export interface Task {
-  createdAt: number;
+  id?: string;
   text: string;
   checked: boolean;
-  id?: any;
+  pushed?: boolean; // ✅ this represents "pushed to completed list"
+  createdAt: number;
 }
+

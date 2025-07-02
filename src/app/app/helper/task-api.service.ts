@@ -1,7 +1,7 @@
 // task-api.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import { Task } from './task.model';
 
 @Injectable({ providedIn: 'root' })
@@ -22,11 +22,15 @@ export class TaskApiService {
     return this.http.post<Task>(this.url, task);
   }
 
+
   updateTask(task: Task): Observable<Task> {
     return this.http.put<Task>(`${this.url}/${task.id}`, task);
   }
 
-  deleteTask(id: string): Observable<void> {
+  deleteTask(id: string | undefined): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
+
+
+
 }

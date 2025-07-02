@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Task} from '../../helper/task.model';
 import {CommonModule, DatePipe, NgIf} from '@angular/common';
+
 import {TaskApiService} from '../../helper/task-api.service';
 import {FormsModule} from '@angular/forms';
 import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
 import {RouterLink} from '@angular/router';
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
 import {HeaderComponent} from '../../navigation/header/header';
+import {TaskService} from '../../helper/task.service';
 
 @Component({
   selector: 'app-task-table',
@@ -32,6 +34,8 @@ export class TaskTableComponent implements OnInit {
   pageSize = 10;
 
 
+
+
   get pagedTasks(): Task[] {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
@@ -53,6 +57,30 @@ export class TaskTableComponent implements OnInit {
     });
   }
 
+  deleteTask(task: Task): void {
+    if (!task.id) return;
+
+    this.taskService.deleteTask(task.id).subscribe({
+      next: () => {
+        // ✅ remove task from local list
+        this.userList = this.userList.filter(t => t.id !== task.id);
+        this.tasks = this.tasks.filter(t => t.id !== task.id);
+      },
+      error: err => console.error('Failed to delete task:', err)
+    });
+  }
+
+  onCheckedChange(task: Task, checked: boolean): void {
+    const updatedTask = { ...task, checked };
+
+    this.taskService.updateTask(updatedTask).subscribe({
+      next: () => {
+        task.checked = checked; // ✅ update local value for immediate UI update
+      },
+      error: err => console.error('Failed to update checked status:', err)
+    });
+  }
+
 
   onPageChange(event: { page: number; pageSize: number }) {
     this.currentPage = event.page;
@@ -60,7 +88,13 @@ export class TaskTableComponent implements OnInit {
   }
 
 
+
+
   ngOnInit(): void {
+    this.loadTasks();
+  }
+
+  loadTasks(): void {
     this.taskService.getList().subscribe({
       next: (data: any) => {
         this.tasks = data;
@@ -71,6 +105,9 @@ export class TaskTableComponent implements OnInit {
     });
   }
 
+
   protected readonly Math = Math;
 }
+
+
 

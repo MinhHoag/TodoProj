@@ -1,10 +1,12 @@
 <app-header></app-header>
-<div class="fixed-pagination"><app-pagination
+<div class="fixed-pagination"><div class="pagination"><app-pagination
   [totalItems]="tasks.length"
   [pageSize]="pageSize"
   [currentPage]="currentPage"
   (pageChange)="onPageChange($event)">
-</app-pagination></div>
+</app-pagination><span>&#8203;</span></div> <!-- HTML entity for \u200B -->
+</div>
+
 <table>
   <thead>
   <tr>
@@ -12,6 +14,7 @@
     <th>Text</th>
     <th>Checked</th>
     <th>Created At</th>
+    <th>Delete</th>
   </tr>
   </thead>
   <tbody>
@@ -23,10 +26,21 @@
         (valueChange)="onTaskTextChange(task, $event)">
       </app-inline-edit>
     </td>
-
-    <td>{{ task.checked ? '✅' : '❌' }}</td>
+    <td>
+      <input class="checkbox"
+        type="checkbox"
+        [checked]="task.checked"
+        #checkbox
+        (change)="onCheckedChange(task, checkbox.checked)" />
+    </td>
     <td>{{ task.createdAt * 1000 | date: 'dd/MM/yyyy HH:mm' }}</td>
+    <td colspan="4" style="text-align: right;">
+      <button class="delete-button" (click)="deleteTask(task)">🗑</button>
+    </td>
+
+
   </tr>
+
   </tbody>
 </table>
 

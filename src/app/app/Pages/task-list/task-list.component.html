@@ -1,5 +1,6 @@
 <app-header></app-header>
 
+
 <div class="input-wrapper">
   <input
     [(ngModel)]="newTaskText"
@@ -19,7 +20,14 @@
 </div>
 <button (click)="clearAllWithConfirm()"  class="clear-button">Clear all</button>
 <button (click)=clearCompletedTasks() class="clear-button">Clear completed</button>
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner"></div>
+  <p>{{ loadingMessage }}
+    <span class="task-length">{{ tasks.length }}</span></p>
+  <button (click)="cancelLoading()">Cancel</button>
 
+</div>
+<button (click)="generateDebugTasks()" class="debug-button">🛠 Generate 20 Tasks</button>
 
 <div style="display: flex; justify-content:center; margin-bottom: 23px ">
   <app-pagination
@@ -32,11 +40,17 @@
 <ul id="task-list" class="container">
   <div>Total tasks: <span class="task-length">{{ tasks.length }}</span><span><button (click)="clearAllWithConfirm()"  class="clear-button">Clear all</button>
 <button (click)=clearCompletedTasks() class="clear-button">Clear completed</button>
+
 </span>
   </div>
   <li *ngFor="let task of pagedTasks" class="adding" [class.complete]="task.checked">
     <div class="task-content">
-      <input type="checkbox" [(ngModel)]="task.checked" (change)="onCheckboxChange($event, task)" />
+      <input
+        type="checkbox"
+        [checked]="task.checked"
+        (change)="onCheckboxChange($event, task)"
+      />
+
 
       <app-inline-edit
         [value]="task.text"

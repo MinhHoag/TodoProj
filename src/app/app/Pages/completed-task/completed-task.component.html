@@ -3,25 +3,24 @@
   <button (click)="reinsert()" class="add-button">Reinsert Checked</button>
   <button (click)="clearAll()" class="remove-button">Clear All</button>
 </div>
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner"></div>
+  <p>{{ loadingMessage }}</p>
+  <button (click)="cancelClearAll()">Cancel</button>
 
-
+</div>
 <ul id="task-list" class="container">
   <div>Total completed: <span class="task-length">{{ tasks.length }}</span></div>
 
   <li *ngFor="let task of tasks" class="adding">
     <div class="task-content">
-    <input
-      type="checkbox"
-      [(ngModel)]="task.checked"
-    />
-    <span [class.completed]="task.checked">{{ task.text }}</span>
-    <button (click)="remove(task)" class="remove-button">X</button></div>
+      <input type="checkbox" [(ngModel)]="task._selected" />
+      <span>{{ task.text }}</span>
+      <button (click)="remove(task)" class="remove-button">X</button>
+    </div>
   </li>
 </ul>
 
-
-<nav >
+<nav>
   <a class="home-nav" routerLink="/task-list">⬅ Back to Task List</a>
-
 </nav>
-

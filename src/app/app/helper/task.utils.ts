@@ -1,5 +1,7 @@
 // task.utils.ts
 import {Task} from './task.model';
+import {ConfirmService} from '../reuse-components/confirm-dialog/confirm.service';
+import {Observable, of, switchMap} from 'rxjs';
 
 export function clearCompletedTasks(tasks: Task[]): Task[] {
   return tasks.filter(task => !task.checked);
@@ -39,4 +41,13 @@ export function sortTasks(tasks: Task[]): Task[] {
     }
     return a.createdAt - b.createdAt;
   });
+}
+export function confirmAndRun<T extends unknown>(
+  confirmService: ConfirmService,
+  message: string,
+  action: () => Observable<T>
+): Observable<T | undefined> {
+  return confirmService.open(message).pipe(
+    switchMap(confirmed => confirmed ? action() : of(undefined))
+  );
 }

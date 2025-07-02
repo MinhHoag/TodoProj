@@ -1,10 +1,11 @@
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {TaskService} from '../../helper/task.service';
-import {Component} from '@angular/core';
-import {Task} from '../../helper/task.model';
-import {RouterLink} from '@angular/router';
-import {HeaderComponent} from '../../navigation/header/header';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TaskService } from '../../helper/task.service';
+import { Component } from '@angular/core';
+import { Task } from '../../helper/task.model';
+import { RouterLink } from '@angular/router';
+import { HeaderComponent } from '../../navigation/header/header';
+import { ConfirmService } from '../../reuse-components/confirm-dialog/confirm.service';
 
 @Component({
   selector: 'app-completed-task',
@@ -14,34 +15,51 @@ import {HeaderComponent} from '../../navigation/header/header';
   imports: [CommonModule, FormsModule, RouterLink, HeaderComponent],
 })
 export class CompletedTaskComponent {
-  tempt: Task[] = [];
+  tasks: (Task & { _selected?: boolean })[] = [];
+  loading = false;
+  loadingMessage = '';
 
-  constructor(public taskService: TaskService) {
-    this.refreshLocalCompleted();
+  constructor(private taskService: TaskService, private confirm: ConfirmService) {}
+  ngOnInit() {
+    this.tasks = this.taskService.getCompletedTasks();
   }
 
-  get tasks() {
-    return this.tempt;
+
+  loadCompletedTasks() {
+    this.tasks = this.taskService.getCompletedTasks();
+
   }
 
   remove(task: Task) {
-    this.taskService.removeCompletedTask(task);
-    this.tempt = this.tempt.filter(t => t.id !== task.id);
+    this.taskService.removeTask(task).subscribe(() => this.loadCompletedTasks());
   }
 
   reinsert() {
-    const toReinsert = this.tempt.filter(task => task.checked);
-    this.taskService.reinsertFromCompleted(toReinsert);
-    this.tempt = this.tempt.filter(task => !task.checked); // remove from local
+    const selected = this.tasks.filter(t => t._selected);
+    this.taskService.reinsertFromCompleted(selected).subscribe(() => {
+      this.loadCompletedTasks();
+    });
   }
 
   clearAll() {
-    this.taskService.clearAllCompleted();
-    this.tempt = [];
+    this.loading = true;
+    this.loadingMessage = 'Deleting completed tasks...';
+    this.taskService.clearCompletedWithConfirm(this.confirm, () => this.loadCompletedTasks()).subscribe({
+      next: () => {
+        this.loading = false;
+      },
+      error: () => {
+        this.loadingMessage = 'Something went wrong!';
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
 
-  private refreshLocalCompleted() {
-    const completed = this.taskService.getCompletedTasks();
-    this.tempt = completed.map(task => ({ ...task, checked: false }));
+  cancelClearAll() {
+    this.loadingMessage = 'Cancelling...';
+    this.taskService.cancelClearCompleted();
   }
 }

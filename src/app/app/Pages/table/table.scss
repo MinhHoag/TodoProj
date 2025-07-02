@@ -39,6 +39,9 @@ th:nth-child(3), td:nth-child(3) {  // CHECKED
 th:nth-child(4), td:nth-child(4) {  // CREATED AT
   width: 20px;
 }
+th:nth-child(5), td:nth-child(5) {
+  width: 20px;
+}
 
 
 tbody tr:nth-child(even) {
@@ -70,14 +73,50 @@ nav a{
 
 .fixed-pagination {
   position: fixed;
-  bottom: 0;
+  bottom: 15px;
   left: 0;
+  right: 200px;
   width: 100%;
   background-color: white;
-  padding: 12px;
   border-top: 1px solid #ccc;
-  z-index: 100;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end; /* ✅ Align to the right */
+  max-width: 98%; /* Optional: limit inner content width */
+  margin: 0 auto;
 
 }
+.delete-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px; /* smaller icon */
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+td input[type="checkbox"] {
+  transform: scale(1.4);
+  cursor: pointer;
+  margin: auto;
+  display: block;
+  accent-color: #3baac6; /* 💅 match your header color */
+}
+
+
 
