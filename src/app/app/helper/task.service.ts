@@ -43,20 +43,23 @@ export class TaskService {
 
 
   getCompletedTasks(): Task[] {
-    return this.completedTasks;
+    return [...this.completedTasks];
   }
 
 
   removeCompletedTask(task: Task): void {
-    this.completedTasks = this.completedTasks.filter(t => t !== task);
+    this.completedTasks = this.completedTasks.filter(t => t.id !== task.id);
   }
 
-  reinsertFromCompleted(checkedOnly = true): void {
-    const toReinsert = this.completedTasks.filter(task => !checkedOnly || task.checked);
-    this.tasks = [...this.tasks, ...toReinsert.map(t => ({ ...t, checked: false }))];
-    this.completedTasks = this.completedTasks.filter(task => checkedOnly ? !task.checked : false);
-  }
 
+
+  reinsertFromCompleted(tasks: Task[]) {
+    tasks.forEach(task => {
+      const newTask = { ...task, checked: false };
+      this.tasks.push(newTask);
+      this.completedTasks = this.completedTasks.filter(t => t.id !== task.id);
+    });
+  }
 
 
 }

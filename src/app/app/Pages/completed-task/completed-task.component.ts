@@ -14,23 +14,34 @@ import {HeaderComponent} from '../../navigation/header/header';
   imports: [CommonModule, FormsModule, RouterLink, HeaderComponent],
 })
 export class CompletedTaskComponent {
+  tempt: Task[] = [];
+
   constructor(public taskService: TaskService) {
+    this.refreshLocalCompleted();
   }
 
   get tasks() {
-    return this.taskService.getCompletedTasks();
+    return this.tempt;
   }
 
   remove(task: Task) {
     this.taskService.removeCompletedTask(task);
+    this.tempt = this.tempt.filter(t => t.id !== task.id);
   }
 
   reinsert() {
-    this.taskService.reinsertFromCompleted(true);
+    const toReinsert = this.tempt.filter(task => task.checked);
+    this.taskService.reinsertFromCompleted(toReinsert);
+    this.tempt = this.tempt.filter(task => !task.checked); // remove from local
   }
 
   clearAll() {
     this.taskService.clearAllCompleted();
+    this.tempt = [];
+  }
 
+  private refreshLocalCompleted() {
+    const completed = this.taskService.getCompletedTasks();
+    this.tempt = completed.map(task => ({ ...task, checked: false }));
   }
 }
