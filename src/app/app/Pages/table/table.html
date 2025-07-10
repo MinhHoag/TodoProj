@@ -1,10 +1,13 @@
 <app-header></app-header>
-<div class="fixed-pagination"><div class="pagination"><app-pagination
-  [totalItems]="tasks.length"
-  [pageSize]="pageSize"
-  [currentPage]="currentPage"
-  (pageChange)="onPageChange($event)">
-</app-pagination><span>&#8203;</span></div> <!-- HTML entity for \u200B -->
+<div class="fixed-pagination">
+  <div class="pagination">
+    <app-pagination
+      [totalItems]="tasks.length"
+      [pageSize]="pageSize"
+      [currentPage]="currentPage"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+    <span>&#8203;</span></div>
 </div>
 
 <table>
@@ -28,10 +31,10 @@
     </td>
     <td>
       <input class="checkbox"
-        type="checkbox"
-        [checked]="task.checked"
-        #checkbox
-        (change)="onCheckedChange(task, checkbox.checked)" />
+             type="checkbox"
+             [checked]="task.checked"
+             #checkbox
+             (change)="onCheckedChange(task, checkbox.checked)"/>
     </td>
     <td>{{ task.createdAt * 1000 | date: 'dd/MM/yyyy HH:mm' }}</td>
     <td colspan="4" style="text-align: right;">

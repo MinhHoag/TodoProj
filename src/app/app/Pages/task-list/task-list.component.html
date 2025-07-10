@@ -1,6 +1,17 @@
 <app-header></app-header>
+<div class="search-wrapper">
+  <input
+    [(ngModel)]="searchQuery"
+    (input)="applySearch()"
+    type="text"
+    placeholder="🔍 Search tasks..."
+    class="search-box"
+  />
+</div>
 
-
+<button (click)="generateDebugTasks()" style="position: absolute; margin-top: 15px " class="remove-button">🛠 Generate 20
+  Tasks
+</button>
 <div class="input-wrapper">
   <input
     [(ngModel)]="newTaskText"
@@ -16,18 +27,16 @@
   </button>
 
 
-
 </div>
-<button (click)="clearAllWithConfirm()"  class="clear-button">Clear all</button>
-<button (click)=clearCompletedTasks() class="clear-button">Clear completed</button>
+
 <div *ngIf="loading" class="loading-overlay">
   <div class="spinner"></div>
   <p>{{ loadingMessage }}
-    <span class="task-length">{{ tasks.length }}</span></p>
+    <span class="task-length"></span></p>
   <button (click)="cancelLoading()">Cancel</button>
 
 </div>
-<button (click)="generateDebugTasks()" class="debug-button">🛠 Generate 20 Tasks</button>
+
 
 <div style="display: flex; justify-content:center; margin-bottom: 23px ">
   <app-pagination
@@ -38,11 +47,16 @@
   </app-pagination>
 </div>
 <ul id="task-list" class="container">
-  <div>Total tasks: <span class="task-length">{{ tasks.length }}</span><span><button (click)="clearAllWithConfirm()"  class="clear-button">Clear all</button>
-<button (click)=clearCompletedTasks() class="clear-button">Clear completed</button>
-
-</span>
+  <div class="task-header">
+    <div class="task-count">
+      Total tasks: <span class="task-length">{{ tasks.length }}</span>
+    </div>
+    <div class="clear-action">
+      <button (click)="clearAllWithConfirm()" class="clear-all">Clear all</button>
+      <button (click)="pushCompletedTasks()" class="clear-completed">Push completed</button>
+    </div>
   </div>
+
   <li *ngFor="let task of pagedTasks" class="adding" [class.complete]="task.checked">
     <div class="task-content">
       <input
@@ -55,7 +69,7 @@
       <app-inline-edit
         [value]="task.text"
         (valueChange)="updateTaskText(task, $event)"
-        [isChecked]= "task.checked"
+        [isChecked]="task.checked"
         [ngClass]="{ 'completed': task.checked }"
         [class.completed]="task.checked">
       </app-inline-edit>
@@ -63,7 +77,6 @@
 
     <button (click)="removeTask(task)" class="remove-button">X</button>
   </li>
-
 
 
 </ul>

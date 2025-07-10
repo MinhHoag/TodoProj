@@ -5,7 +5,6 @@ body {
 }
 
 
-
 .container {
   max-width: 400px;
   margin: 0 auto;
@@ -14,8 +13,6 @@ body {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
-
 
 
 .input-row {
@@ -39,13 +36,10 @@ input[type="checkbox"] {
 }
 
 
-
-.completed{
+.completed {
   color: grey;
   text-decoration: line-through;
 }
-
-
 
 
 ul {
@@ -55,8 +49,7 @@ ul {
 }
 
 
-
-li.completed button.remove-button{
+li.completed button.remove-button {
   text-decoration: none !important;
 }
 
@@ -93,7 +86,6 @@ li:hover {
 }
 
 
-
 button.remove-button:hover {
   background-color: #c5eaff;
 }
@@ -110,13 +102,11 @@ button.remove-button {
 }
 
 
-
 .add-button.disabled {
   background-color: #eee;
   color: #999;
   cursor: not-allowed !important;
 }
-
 
 
 .input-wrapper {
@@ -156,10 +146,27 @@ button.remove-button {
   display: flex;
   align-items: center;
   flex: 1;
-  gap: 12px; /* optional: space between checkbox and text */
+  gap: 12px;
+  max-width: 100%;
   overflow: hidden;
   padding-right: 7px;
 }
+
+.task-content app-inline-edit {
+  flex: 1;
+  max-width: 100%;
+  width: 100%;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.inline-edit {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 
 .task-content span {
   white-space: normal;
@@ -168,19 +175,59 @@ button.remove-button {
   flex: 1;
 }
 
-.clear-button {
-  align: right;
+
+
+.clear-action {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+
+.clear-all {
+  color: #d32f2f;
   background-color: rgba(237, 251, 255, 0);
   font-size: 13px;
-  font-family: Arial  ;
+  font-family: Arial;
   font-weight: bold;
   border: none;
   padding: 4px 8px;
-  border-radius: 4px;cursor: pointer;
+  border-radius: 4px;
+  cursor: pointer;
   font-style: normal;
   text-decoration: none !important;
 }
-.clear-button:hover {
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.clear-completed {
+  display: inline-block;
+  justify-content: right;
+  align: right;
+  background-color: rgba(237, 251, 255, 0);
+  font-size: 13px;
+  font-family: Arial;
+  font-weight: bold;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-style: normal;
+  text-decoration: none !important;
+}
+
+.clear-all:hover {
+  background-color: #c5eaff;
+
+  transition: background-color 0.5s ease;
+}
+
+.clear-completed:hover {
   background-color: #c5eaff;
 
   transition: background-color 0.5s ease;
@@ -198,7 +245,9 @@ button.remove-button {
 
 .task-length {
   font-weight: bold;
+  display: inline-flex;
 }
+
 .edit-input {
   flex: 1;
   padding: 4px 8px;
@@ -206,15 +255,18 @@ button.remove-button {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 nav a {
 
-  padding-right:10px;
+  padding-right: 10px;
 }
+
 .completed {
   text-decoration: line-through;
   color: gray;
   opacity: 0.6;
 }
+
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -245,5 +297,24 @@ nav a {
     transform: rotate(360deg);
   }
 }
+
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 12px auto;
+  max-width: 480px;
+  padding: 0 8px;
+}
+
+.search-box {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+
 
 

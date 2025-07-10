@@ -1,14 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Task} from '../../helper/task.model';
-import {CommonModule, DatePipe, NgIf} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import {TaskApiService} from '../../helper/task-api.service';
 import {FormsModule} from '@angular/forms';
 import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
-import {RouterLink} from '@angular/router';
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
 import {HeaderComponent} from '../../navigation/header/header';
-import {TaskService} from '../../helper/task.service';
 
 @Component({
   selector: 'app-task-table',
@@ -28,12 +26,12 @@ import {TaskService} from '../../helper/task.service';
 export class TaskTableComponent implements OnInit {
   tasks: Task[] = [];
   userList: Task[] = [];
-  constructor(private taskService: TaskApiService) {}
+
+  constructor(private taskService: TaskApiService) {
+  }
 
   currentPage = 1;
   pageSize = 10;
-
-
 
 
   get pagedTasks(): Task[] {
@@ -47,7 +45,7 @@ export class TaskTableComponent implements OnInit {
     const updatedText = String(newText);
     if (task.text === updatedText) return;
 
-    const updatedTask = { ...task, text: updatedText };
+    const updatedTask = {...task, text: updatedText};
 
     this.taskService.updateTask(updatedTask).subscribe({
       next: () => {
@@ -71,7 +69,7 @@ export class TaskTableComponent implements OnInit {
   }
 
   onCheckedChange(task: Task, checked: boolean): void {
-    const updatedTask = { ...task, checked };
+    const updatedTask = {...task, checked};
 
     this.taskService.updateTask(updatedTask).subscribe({
       next: () => {
@@ -86,8 +84,6 @@ export class TaskTableComponent implements OnInit {
     this.currentPage = event.page;
     this.pageSize = event.pageSize;
   }
-
-
 
 
   ngOnInit(): void {

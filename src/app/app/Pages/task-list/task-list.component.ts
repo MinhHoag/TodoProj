@@ -1,16 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
-import { TaskService } from '../../helper/task.service';
-import { Task } from '../../helper/task.model';
-import { RouterModule } from '@angular/router';
+import {TaskService} from '../../helper/task.service';
+import {Task} from '../../helper/task.model';
+import {RouterModule} from '@angular/router';
 import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
 import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
 import {MatButton} from '@angular/material/button';
 import {HeaderComponent} from '../../navigation/header/header';
-import {confirmAndRun} from '../../helper/task.utils';
+import {confirmAndRun, sortTasks} from '../../helper/task.utils';
 import {tap} from 'rxjs';
+import {subscribe} from '@angular/fire/data-connect';
 
 
 @Component({
@@ -23,51 +24,82 @@ import {tap} from 'rxjs';
 export class TaskListComponent implements OnInit {
   newTaskText = '';
   tasks: Task[] = [];
+  searchQuery = '';
+  filteredTasks: Task[] = [];
+  currentPage = 1;
+  pageSize = 10;
+  loading = false;
+  loadingMessage = '';
+
+
   ngOnInit() {
     this.loadTasks();
   }
 
-
-
-
-  constructor(private confirm: ConfirmService, private taskService: TaskService) {}
-
-  currentPage = 1;
-  pageSize = 10;
-  get pagedTasks(): Task[] {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.tasks.slice(start, start + this.pageSize);
+  constructor(private confirm: ConfirmService, private taskService: TaskService) {
   }
 
+//api
+  get pagedTasks(): Task[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredTasks.slice(start, start + this.pageSize);
+  }
+
+  //updating data
+
+  //turning page
   onPageChange(event: { page: number; pageSize: number }) {
     this.currentPage = event.page;
     this.pageSize = event.pageSize;
   }
+  //ticking checkboxes
+  onCheckboxChange(event: Event, task: Task): void {
+    const checkbox = event.target as HTMLInputElement;
+    const checked = checkbox.checked;
 
-
-
-
-  loadTasks() {
-    this.taskService.getTasks().subscribe(all => {
-      this.tasks = all.filter(t => !this.taskService.hasBeenPushed(t));
+    this.taskService.updateTaskChecked(task, checked).subscribe({
+      next: () => {
+        this.loadTasks();
+      },
+      error: err => console.error('Failed to update checkbox:', err)
     });
   }
 
+  loadTasks() {
+    this.taskService.getTasks().subscribe(all => {
+      this.tasks = sortTasks(all.filter(t => !t.pushed));
+      this.applySearch(); // filter based on current query
+    });
+  }
+//search task
+  applySearch() {
+    const query = this.searchQuery.trim().toLowerCase();
+    this.filteredTasks = !query
+      ? [...this.tasks]
+      : this.tasks.filter(task => task.text.toLowerCase().includes(query));
+  }
+//remove button
+  removeTask(task: Task): void {
+    this.taskService.deleteWithLoading(
+      task,
+      val => this.loading = val,
+      msg => this.loadingMessage = msg
+    ).subscribe(() => this.loadTasks());
+  }
 
-  loading = false;
-  loadingMessage = '';
-  cancelled = false;
 
 
+//clear all
   clearAllWithConfirm(): void {
-    this.cancelled = false;
     this.loading = true;
-    this.loadingMessage = 'Task(s) remaining...';
+    this.loadingMessage = `Task(s) remaining... ${this.tasks.length}`;
 
     this.taskService.clearActiveWithConfirm(
       this.confirm,
-      () => this.loadTasks(),           // update UI on each delete
-      () => this.cancelled              // stop if user cancels
+      () => {
+        this.loadTasks();
+        this.loadingMessage = `Task(s) remaining... ${this.tasks.length}`;
+      }
     ).subscribe({
       next: () => {
         this.loading = false;
@@ -81,50 +113,36 @@ export class TaskListComponent implements OnInit {
       }
     });
   }
-
-
+  //cancel clear all
   cancelLoading() {
-    this.taskService.cancelClear(); // ✅ trigger cancel
+    this.taskService.cancelClear();
     this.loadingMessage = 'Cancelling...';
     setTimeout(() => {
       this.loading = false;
       this.loadingMessage = '';
-    }, 300); // Optional slight delay to allow UI to update
+    }, 300);
+  }
+//push to completed task
+  pushCompletedTasks(): void {
+    this.taskService.pushCompleted().subscribe(() => {
+      this.loadTasks();
+    });
   }
 
-
-
-
-
-
-
-
-  get isAddDisabled(): boolean {
-    const trimmed = this.newTaskText.trim();
-    return !trimmed || this.tasks.some(task => task.text === trimmed);
-  }
-
+//add task input behavior
   addTask(): void {
     this.taskService.addTask(this.newTaskText).subscribe(() => {
       this.loadTasks();
       this.newTaskText = '';
     });
   }
-
-
-  removeTask(task: Task): void {
-    this.taskService.removeTask(task).subscribe(() => {
-      this.loadTasks();
-    });
+  //check if task empty or existed
+  get isAddDisabled(): boolean {
+    const trimmed = this.newTaskText.trim();
+    return !trimmed || this.tasks.some(task => task.text === trimmed);
   }
 
-  clearCompletedTasks(): void {
-    this.taskService.clearCompleted().subscribe(() => {
-      this.loadTasks(); // refresh active list
-    });
-  }
-
-
+  //change task
   updateTaskText(task: Task, newText: string | number): void {
     this.taskService.updateTaskText(task, String(newText)).subscribe(() => {
       this.loadTasks();
@@ -132,13 +150,9 @@ export class TaskListComponent implements OnInit {
   }
 
 
-
-
-
-
   onEnter(input: HTMLInputElement): void {
     if (this.isAddDisabled) {
-      input.select(); // ✅ highlight all text in the input box
+      input.select();
     } else {
       this.addTask();
     }
@@ -147,32 +161,11 @@ export class TaskListComponent implements OnInit {
 
 
 
-  onCheckboxChange(event: Event, task: Task): void {
-    const checkbox = event.target as HTMLInputElement;
-    const checked = checkbox.checked;
-
-    this.taskService.updateTaskChecked(task, checked).subscribe({
-      next: () => {
-        this.loadTasks(); // ✅ refresh local task list so clearCompleted() sees updated flags
-      },
-      error: err => console.error('Failed to update checkbox:', err)
-    });
-  }
-
-
   generateDebugTasks(): void {
     this.taskService.generateSampleTasks().subscribe(() => {
-      this.loadTasks(); // reload task list after generation
+      this.loadTasks();
     });
   }
-
-
-
-
-
-
-
-
 
 
 }

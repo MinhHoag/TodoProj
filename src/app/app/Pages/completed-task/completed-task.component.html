@@ -1,8 +1,8 @@
 <app-header></app-header>
 <div class="input-wrapper">
-  <button (click)="reinsert()" class="add-button">Reinsert Checked</button>
-  <button (click)="clearAll()" class="remove-button">Clear All</button>
+  <button (click)="reinsert()" class="reinsert-button">Reinsert Checked</button>
 </div>
+
 <div *ngIf="loading" class="loading-overlay">
   <div class="spinner"></div>
   <p>{{ loadingMessage }}</p>
@@ -10,11 +10,15 @@
 
 </div>
 <ul id="task-list" class="container">
-  <div>Total completed: <span class="task-length">{{ tasks.length }}</span></div>
-
+  <div class="task-header">
+    <div>Total completed: <span class="task-length">{{ tasks.length }}</span></div>
+    <div class="clear-action">
+      <button (click)="clearAll()" class="clear-all">Clear All</button>
+    </div>
+  </div>
   <li *ngFor="let task of tasks" class="adding">
     <div class="task-content">
-      <input type="checkbox" [(ngModel)]="task._selected" />
+      <input type="checkbox" [(ngModel)]="task._selected"/>
       <span>{{ task.text }}</span>
       <button (click)="remove(task)" class="remove-button">X</button>
     </div>

@@ -1,39 +1,23 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, HostListener, Input, Output, EventEmitter } from '@angular/core';
 import {InlineEditComponent} from '../inline-edit/inline-edit.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-pagination',
-  standalone: true,
-  imports: [CommonModule, FormsModule, InlineEditComponent],
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss']
+  styleUrls: ['./pagination.component.scss'],
+  imports: [
+    InlineEditComponent,
+    ReactiveFormsModule,
+    FormsModule
+  ],
+  standalone: true
 })
 export class PaginationComponent {
   @Input() totalItems = 0;
-  @Input() pageSize = 5;
+  @Input() pageSize = 10;
   @Input() currentPage = 1;
-
-
-
-
   @Output() pageChange = new EventEmitter<{ page: number; pageSize: number }>();
-
-  editingPage = false;
-  pageInput: number = this.currentPage;
-
-  goToPage(newPage: string | number): void {
-    const page = Number(newPage);
-    const clamped = Math.max(1, Math.min(page, this.totalPages));
-    this.currentPage = clamped;
-    this.pageInput = clamped;
-    this.pageChange.emit({ page: clamped, pageSize: this.pageSize });
-  }
-
-
-
-
 
   get totalPages(): number {
     return this.pageSize === 0 ? 1 : Math.ceil(this.totalItems / this.pageSize);
@@ -44,7 +28,6 @@ export class PaginationComponent {
   }
 
   get end(): number {
-    if (this.pageSize === 0) return this.totalItems;
     return Math.min(this.currentPage * this.pageSize, this.totalItems);
   }
 
@@ -52,18 +35,36 @@ export class PaginationComponent {
     const newPage = this.currentPage + delta;
     if (newPage >= 1 && newPage <= this.totalPages) {
       this.currentPage = newPage;
-      this.pageChange.emit({ page: this.currentPage, pageSize: this.pageSize });
+      this.pageChange.emit({ page: newPage, pageSize: this.pageSize });
     }
   }
 
-
+  goToPage(page: string | number): void {
+    const num = Math.max(1, Math.min(this.totalPages, Number(page)));
+    this.currentPage = num;
+    this.pageChange.emit({ page: num, pageSize: this.pageSize });
+  }
 
   onPageSizeChange() {
-    // Reset currentPage internally as well
     this.currentPage = 1;
-
-    // Emit updated state to parent
     this.pageChange.emit({ page: this.currentPage, pageSize: this.pageSize });
   }
 
+  @HostListener('window:keydown', ['$event'])
+  handleArrowKeys(event: KeyboardEvent) {
+    const active = document.activeElement;
+    const isEditable =
+      active?.tagName === 'INPUT' ||
+      active?.tagName === 'TEXTAREA' ||
+      active?.getAttribute('contenteditable') === 'true' ||
+      active?.classList.contains('inline-edit');
+
+    if (!isEditable) {
+      if (event.key === 'ArrowRight') {
+        this.changePage(1);
+      } else if (event.key === 'ArrowLeft') {
+        this.changePage(-1);
+      }
+    }
+  }
 }

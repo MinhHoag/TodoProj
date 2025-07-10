@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { TaskService } from '../../helper/task.service';
-import { Component } from '@angular/core';
-import { Task } from '../../helper/task.model';
-import { RouterLink } from '@angular/router';
-import { HeaderComponent } from '../../navigation/header/header';
-import { ConfirmService } from '../../reuse-components/confirm-dialog/confirm.service';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {TaskService} from '../../helper/task.service';
+import {Component} from '@angular/core';
+import {Task} from '../../helper/task.model';
+import {RouterLink} from '@angular/router';
+import {HeaderComponent} from '../../navigation/header/header';
+import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
 
 @Component({
   selector: 'app-completed-task',
@@ -19,15 +19,18 @@ export class CompletedTaskComponent {
   loading = false;
   loadingMessage = '';
 
-  constructor(private taskService: TaskService, private confirm: ConfirmService) {}
+  constructor(private taskService: TaskService, private confirm: ConfirmService) {
+  }
+
   ngOnInit() {
-    this.tasks = this.taskService.getCompletedTasks();
+    this.loadCompletedTasks();
   }
 
 
   loadCompletedTasks() {
-    this.tasks = this.taskService.getCompletedTasks();
-
+    this.taskService.getTasks().subscribe(tasks => {
+      this.tasks = tasks.filter((t: Task) => t.pushed);
+    });
   }
 
   remove(task: Task) {

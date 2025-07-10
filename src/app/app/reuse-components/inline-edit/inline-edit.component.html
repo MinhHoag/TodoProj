@@ -1,26 +1,29 @@
+<!-- READ VIEW -->
 <span *ngIf="!editing"
       (dblclick)="startEdit()"
       [ngClass]="{ 'completed': isChecked }"
-      style="cursor: pointer; display: inline-block;">
-  {{ (displayValue ?? value) || placeholder }}</span>
+      class="display-span"
+      style="cursor: pointer; display: inline-block; text-decoration: underline;">
+  {{ (displayValue ?? value) || placeholder }}
+</span>
 
-
+<!-- HIDDEN FOR WIDTH MEASUREMENT (if needed) -->
 <span #mirror class="mirror-span">
   {{ (localValue || placeholder || 'X') + (type === 'number' ? '\u2002Z' : '') }}
 </span>
 
-
-
-<input *ngIf="editing"
-       #inputRef
-       class="inline-edit"
-       [type]="type"
-       [(ngModel)]="localValue"
-       [placeholder]="placeholder"
-       [min]="min"
-       [max]="max"
-       (input)="resizeInput()"
-       (blur)="submit()"
-       (keyup.enter)="submit()"
-       (keyup.escape)="cancel()"
-        />
+<!-- EDIT MODE: wrapped for layout control -->
+<div class="input-wrapper">
+  <input *ngIf="editing"
+         #inputRef
+         class="inline-edit"
+         [type]="type"
+         [(ngModel)]="localValue"
+         [placeholder]="placeholder"
+         [min]="min ?? null"
+         [max]="max ?? null"
+         (input)="resizeInput()"
+         (blur)="submit()"
+         (keyup.enter)="submit()"
+         (keyup.escape)="cancel()" />
+</div>

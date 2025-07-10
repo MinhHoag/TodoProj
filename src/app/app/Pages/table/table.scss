@@ -1,10 +1,14 @@
 table {
-  width: 100%;
+  width: 100%; /* Fill available space */
+  max-width: 100%; /* Prevent overflow beyond container */
   border-collapse: collapse;
   font-family: Arial, sans-serif;
   margin: 16px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  table-layout: auto; /* Or 'fixed' for equal-width columns */
+  word-break: break-word;
 }
+
 
 thead {
   background-color: #f8f9fa;
@@ -24,23 +28,24 @@ th {
   font-size: 14px;
 }
 
-th:nth-child(1), td:nth-child(1) {  // ID
-  width: 40px;
+th:nth-child(1), td:nth-child(1) { // ID
+  width: 10%;
 }
 
-th:nth-child(2), td:nth-child(2) {  // TEXT
-  width: 200px;
+th:nth-child(2), td:nth-child(2) { // TEXT
+  width: 55%;
 }
 
-th:nth-child(3), td:nth-child(3) {  // CHECKED
-  width: 30px;
+th:nth-child(3), td:nth-child(3) { // CHECKED
+  width: 10% ;
 }
 
-th:nth-child(4), td:nth-child(4) {  // CREATED AT
-  width: 20px;
+th:nth-child(4), td:nth-child(4) { // CREATED AT
+  width: 15%;
 }
-th:nth-child(5), td:nth-child(5) {
-  width: 20px;
+
+th:nth-child(5), td:nth-child(5) { // DELETE
+  width: 10%;
 }
 
 
@@ -59,9 +64,10 @@ td {
   color: #212529;
 }
 
-nav a{
-  padding-right:10px;
+nav a {
+  padding-right: 10px;
 }
+
 .sticky-pagination {
   position: sticky;
   bottom: 0;
@@ -85,11 +91,12 @@ nav a{
 
 .pagination {
   display: flex;
-  justify-content: flex-end; /* ✅ Align to the right */
-  max-width: 98%; /* Optional: limit inner content width */
+  justify-content: flex-end;
+  max-width: 98%;
   margin: 0 auto;
 
 }
+
 .delete-button {
   background-color: #f44336;
   color: white;
@@ -97,7 +104,7 @@ nav a{
   padding: 6px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 20px; /* smaller icon */
+  font-size: 20px;
   width: 30px;
   height: 30px;
   display: flex;
@@ -115,7 +122,7 @@ td input[type="checkbox"] {
   cursor: pointer;
   margin: auto;
   display: block;
-  accent-color: #3baac6; /* 💅 match your header color */
+  accent-color: #3baac6;
 }
 
 

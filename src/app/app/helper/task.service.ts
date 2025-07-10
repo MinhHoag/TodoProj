@@ -1,6 +1,6 @@
 // task.service.ts
-import { Injectable } from '@angular/core';
-import { Task } from './task.model';
+import {Injectable} from '@angular/core';
+import {Task} from './task.model';
 import {
   catchError,
   concatMap,
@@ -19,9 +19,16 @@ import {
 } from 'rxjs';
 import {TaskApiService} from './task-api.service';
 import {ConfirmService} from '../reuse-components/confirm-dialog/confirm.service';
-import {confirmAndRun} from './task.utils';
+import {
+  batchDelete,
+  batchDeleteCompleted,
+  bulkDelete,
+  confirmAndRun,
+  bulkDeleteCompleted,
+  withDeleteLoading
+} from './task.utils';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class TaskService {
   private completedTasks: Task[] = [];
 
@@ -46,9 +53,23 @@ export class TaskService {
     return this.api.deleteTask(task.id);
   }
 
+  deleteWithLoading(
+    task: Task,
+    setLoading: (val: boolean) => void,
+    setMessage: (msg: string) => void,
+    message: string = 'Deleting task...'
+  ): Observable<void> {
+    return withDeleteLoading(
+      this.removeTask(task),
+      task,
+      setLoading,
+      setMessage,
+      message
+    );
+  }
 
   updateTaskChecked(task: Task, checked: boolean): Observable<Task> {
-    return this.api.updateTask({ ...task, checked });
+    return this.api.updateTask({...task, checked});
   }
 
 
@@ -57,22 +78,22 @@ export class TaskService {
   }
 
   updateTaskText(task: Task, newText: string): Observable<Task> {
-    return this.api.updateTask({ ...task, text: newText });
+    return this.api.updateTask({...task, text: newText});
   }
+
   clearAll(): Observable<void[]> {
     return this.getTasks().pipe(
       switchMap(tasks => forkJoin(tasks.map(task => this.removeTask(task))))
     );
   }
 
-  clearCompleted(): Observable<Task[]> {
+  pushCompleted(): Observable<Task[]> {
     return this.getTasks().pipe(
-      map(tasks => tasks.filter(t => t.checked && !this.hasBeenPushed(t))),
-      tap(completed => {
-        this.completedTasks.push(...completed); // ✅ mark as pushed
-      }),
+      map(tasks => tasks.filter(t => t.checked && !t.pushed)),
       switchMap(completed =>
-        forkJoin(completed.map(task => this.updateTaskChecked(task, true)))
+        forkJoin(completed.map(task =>
+          this.api.updateTask({ ...task, pushed: true })
+        ))
       )
     );
   }
@@ -90,56 +111,12 @@ export class TaskService {
   }
 
 
-  clearActive(onDelete?: () => void, cancelSignal?: Observable<any>): Observable<void> {
-    const batchSize = 3;
 
-    return this.getTasks().pipe(
-      map(tasks => tasks.filter(t => !t.checked)),
-      switchMap(allActive => {
-        if (allActive.length === 0) return of(void 0);
-
-        let remaining = [...allActive];
-
-        const deleteBatch = (): Observable<void> => {
-          if (remaining.length === 0) return of(void 0);
-
-          const batch = remaining.splice(0, batchSize);
-
-          return from(batch).pipe(
-            concatMap(task =>
-              this.removeTask(task).pipe(
-                retry(3),
-                tap(() => {
-                  onDelete?.();
-                  console.log(`Deleted: ${task.text}`);
-                }),
-                catchError(err => {
-                  console.warn(`Failed to delete: ${task.text}`, err);
-                  return of(void 0);
-                })
-              )
-            ),
-            toArray(),
-            delay(300),
-            switchMap(() => deleteBatch())
-          );
-        };
-
-        // 👇 This takeUntil must wrap the entire deleteBatch stream!
-        return deleteBatch().pipe(takeUntil(cancelSignal ?? EMPTY));
-      })
-    );
-  }
-
-
-
-  clearActiveWithConfirm(confirm: ConfirmService, onDelete?: () => void, p0?: () => boolean): Observable<void | undefined> {
+  clearActiveWithConfirm(confirm: ConfirmService, onDelete?: () => void): Observable<void | undefined> {
     return confirmAndRun(confirm, 'Are you sure you want to clear all active tasks?', () =>
-      this.clearActive(onDelete, this.cancelClear$)
+      batchDelete(() => this.getTasks(), task => this.removeTask(task), t => !t.checked, onDelete, this.cancelClear$)
     );
   }
-
-
 
 
   cancelClearCompleted$ = new Subject<void>();
@@ -152,43 +129,7 @@ export class TaskService {
 
 
   clearCompletedRecursively(onDelete?: () => void, cancelSignal?: Observable<any>): Observable<void> {
-    const batchSize = 3;
-
-    return this.getTasks().pipe(
-      map(tasks => tasks.filter(t => t.checked)),
-      switchMap(completedTasks => {
-        if (completedTasks.length === 0) return of(void 0);
-
-        let remaining = [...completedTasks];
-
-        const deleteBatch = (): Observable<void> => {
-          if (remaining.length === 0) return of(void 0);
-
-          const batch = remaining.splice(0, batchSize);
-
-          return from(batch).pipe(
-            concatMap(task =>
-              this.removeTask(task).pipe(
-                retry(3),
-                tap(() => {
-                  onDelete?.();
-                  console.log(`Deleted (completed): ${task.text}`);
-                }),
-                catchError(err => {
-                  console.warn(`Failed to delete (completed): ${task.text}`, err);
-                  return of(void 0);
-                })
-              )
-            ),
-            toArray(),
-            delay(300),
-            switchMap(() => deleteBatch())
-          );
-        };
-
-        return deleteBatch().pipe(takeUntil(cancelSignal ?? EMPTY));
-      })
-    );
+    return batchDeleteCompleted(() => this.getTasks(), task => this.removeTask(task), onDelete, cancelSignal);
   }
 
 
@@ -197,11 +138,6 @@ export class TaskService {
       this.clearCompletedRecursively(onDelete, this.cancelClearCompleted$)
     );
   }
-
-
-
-
-
 
 
   getCompletedTasks(): Task[] {
@@ -213,20 +149,19 @@ export class TaskService {
   }
 
 
-
   removeCompletedTask(task: Task): void {
     this.completedTasks = this.completedTasks.filter(t => t.id !== task.id);
   }
 
 
-
   reinsertFromCompleted(tasks: Task[]): Observable<Task[]> {
     return forkJoin(
       tasks.map(task =>
-        this.updateTaskChecked(task, false)
+        this.api.updateTask({ ...task, checked: false, pushed: false })
       )
     );
   }
+
 
   generateSampleTasks(): Observable<any[]> {
     const tasks: Task[] = [];
@@ -235,22 +170,12 @@ export class TaskService {
       tasks.push({
         text: `Task ${tasks.length + 1}`,
         checked: false,
-        createdAt: Date.now() + i,
+        createdAt: Math.floor(Date.now() / 1000),
       });
     }
 
     return forkJoin(tasks.map(task => this.api.addTask(task)));
   }
-
-
-
-
-
-
-
-
-
-
 
 
 }
