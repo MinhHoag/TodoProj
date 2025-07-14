@@ -31,13 +31,13 @@ export function removeTask(tasks: Task[], taskToRemove: Task): Task[] {
   return tasks.filter(task => task !== taskToRemove);
 }
 
-export function addTask(tasks: Task[], newTaskText: string): Task[] {
+export function addTask(tasks: Task[], newTaskText: string, userId: string): Task[] {
   const trimmedText = newTaskText.trim();
   if (!trimmedText || tasks.some(task => task.text === trimmedText)) {
     return tasks;
   }
 
-  const newTask: Task = { text: trimmedText, checked: false, createdAt: Date.now() };
+  const newTask: Task = { text: trimmedText, checked: false, createdAt: Date.now(), userId: userId };
   const index = tasks.findIndex(task => task.checked);
   const updatedTasks = [...tasks];
 

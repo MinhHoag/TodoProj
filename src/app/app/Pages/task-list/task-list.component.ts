@@ -34,6 +34,8 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit() {
     this.loadTasks();
+    console.log('TaskListComponent loaded');
+
   }
 
   constructor(private confirm: ConfirmService, private taskService: TaskService) {
