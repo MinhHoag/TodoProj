@@ -1,0 +1,36 @@
+<app-header></app-header>
+
+<div class="login-page">
+  <h2>Login</h2>
+
+  <input
+    [(ngModel)]="username"
+    placeholder="Username (no spaces)"
+    autocomplete="username"
+    [class.invalid]="!isUsernameValid && username.length > 0"
+  />
+
+  <input
+    [(ngModel)]="password"
+    placeholder="Password"
+    type="password"
+    autocomplete="current-password"
+  />
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+  <div class="button-group">
+    <button (click)="login()" [disabled]="!isUsernameValid || !password">Log In</button>
+
+    <div class="tooltip-wrapper" [class.disabled]="usernameExists || !isUsernameValid">
+      <button
+        (click)="signup()"
+        [disabled]="usernameExists || !isUsernameValid || !password"
+        class="signup-button"
+      >
+        Sign Up
+      </button>
+      <div class="tooltip" *ngIf="usernameExists">Username already exists</div>
+    </div>
+  </div>
+</div>

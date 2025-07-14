@@ -10,11 +10,12 @@ export class TaskApiService {
   private url = "https://685a19f09f6ef961115509c9.mockapi.io/tasks";
   constructor(private http: HttpClient, private guest: GuestModeService) {}
 
-  private blockIfGuest(): never {
-    if (this.guest.isGuest()) {
-      throw new Error('API access attempted in guest mode');
+  private blockIfGuest(): void {
+    const isGuest = this.guest.isGuest();
+    console.log('[blockIfGuest] guestMode =', isGuest);
+    if (isGuest) {
+      throw new Error('Guest mode is active — API usage is blocked.');
     }
-    throw new Error('[Dev Error] blockIfGuest() should never be called in user mode');
   }
 
   getListByUser(userId: string): Observable<Task[]> {

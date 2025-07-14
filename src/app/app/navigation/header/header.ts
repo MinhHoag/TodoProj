@@ -1,18 +1,35 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { UserService } from '../../helper/user.service';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
+import { CommonModule } from '@angular/common'; // ✅ Required for ngIf/ngFor
+import { AuthService } from '../../helper/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.html',
-  imports: [RouterLink, RouterLinkActive],
   styleUrls: ['./header.scss'],
+  imports: [RouterModule, CommonModule] // ✅ Add CommonModule
 })
-export class HeaderComponent {
-  userId: string;
+export class HeaderComponent implements OnInit {
+  userId: string = '';
+  menuOpen: boolean = false;
 
-  constructor(private userService: UserService) {
-    this.userId = this.userService.getUserId(); // 'guest' or '1', etc.
+  constructor(public auth: AuthService, private router: Router) {}
+
+  ngOnInit() {
+    this.userId = this.auth.getUserId();
+  }
+
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  logout(event: Event) {
+    event.stopPropagation();
+    this.auth.logout();
+    this.menuOpen = false;
+    this.router.navigate(['/task-list', 'guest']);
+    this.userId = 'guest';
   }
 }

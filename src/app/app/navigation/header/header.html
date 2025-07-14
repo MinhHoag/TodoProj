@@ -1,12 +1,44 @@
 <header class="navbar">
   <div class="logo">
-    <img class="logo-icon" src="/favicon.ico" alt="logo" style="height: 24px; vertical-align: middle;" />
     <a [routerLink]="['/task-list', userId]">TodoProj</a>
   </div>
 
   <nav class="nav-links">
-    <a [routerLink]="['/table', userId]" routerLinkActive="active">Table</a>
-    <a [routerLink]="['/task-list', userId]" routerLinkActive="active">Task list</a>
-    <a [routerLink]="['/completed-task', userId]" routerLinkActive="active">Completed</a>
+    <a
+      [routerLink]="['/table', userId]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Table</a>
+
+    <a
+      [routerLink]="['/task-list', userId]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Task list</a>
+
+    <a
+      [routerLink]="['/completed-task', userId]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Completed</a>
   </nav>
+
+
+  <div class="user-menu" (click)="toggleMenu()">
+    <span class="user-label">
+      <span class="user-icon">👤</span>
+      <strong>{{ userId }}</strong>
+    </span>
+
+    <div class="dropdown-menu" [class.open]="menuOpen">
+      <ng-container *ngIf="userId === 'guest'; else loggedInBlock">
+        <a class="menu-link" [routerLink]="['/login']">Sign in</a>
+      </ng-container>
+
+      <ng-template #loggedInBlock>
+        <div class="menu-info">Logged in as <strong>{{ userId }}</strong></div>
+        <button class="menu-button" (click)="logout($event)">Logout</button>
+      </ng-template>
+    </div>
+  </div> <!-- ✅ ← THIS closes .user-menu -->
 </header>

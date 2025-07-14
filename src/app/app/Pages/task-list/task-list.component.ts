@@ -33,10 +33,14 @@ export class TaskListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.loadTasks();
-    console.log('TaskListComponent loaded');
-
+    setTimeout(() => {
+      console.log('[TaskListComponent] userId =', this.taskService['userService'].getUserId());
+      console.log('[TaskListComponent] isGuest =', this.taskService['guestService'].isGuest());
+      this.loadTasks();
+    });
   }
+
+
 
   constructor(private confirm: ConfirmService, private taskService: TaskService) {
   }

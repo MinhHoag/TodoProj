@@ -1,0 +1,131 @@
+.login-page {
+  max-width: 360px;
+  margin: 60px auto;
+  padding: 32px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: Arial, sans-serif;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 24px;
+    color: #3baac6;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: #3baac6;
+    }
+  }
+
+  button {
+    background-color: #3baac6;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin: 0 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #319ab0;
+    }
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 24px 16px;
+    input {
+      padding: 10px 12px;
+    }
+  }
+}
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+button {
+  background-color: #3baac6;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover:enabled {
+    background-color: #319ab0;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed !important;  }
+}
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+
+  .tooltip {
+    visibility: hidden;
+    background-color: #d32f2f;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 4px 8px;
+    position: absolute;
+    z-index: 10;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+
+  }
+
+  &:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+
+
+  }
+}
+input.invalid {
+  border-color: #e53935;
+}
+
+.error-message {
+  color: #e53935;
+  font-size: 13px;
+  margin: 8px 0 0;
+  text-align: left;
+}
+
+
