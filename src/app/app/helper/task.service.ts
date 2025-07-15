@@ -79,6 +79,7 @@ export class TaskService {
     setMessage: (msg: string) => void,
     message: string = 'Deleting task...'
   ): Observable<void> {
+
     if (this.isGuest()) {
       removeGuestTask(task);
       setLoading(false);
@@ -169,23 +170,6 @@ export class TaskService {
     );
   }
 
-  generateSampleTasks(): Observable<Task[]> {
-    if (this.isGuest()) return of([]);
-
-    const userId = this.userService.getUserId();
-    const tasks: Task[] = [];
-
-    for (let i = 1; i <= 20; i++) {
-      tasks.push({
-        text: `Task ${i}`,
-        checked: false,
-        createdAt: Date.now(),
-        userId
-      });
-    }
-
-    return forkJoin(tasks.map(task => this.api.addTask(task)));
-  }
 
   private cancelClearSubject = new Subject<void>();
 
