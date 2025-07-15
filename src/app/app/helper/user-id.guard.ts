@@ -12,7 +12,7 @@ export class UserIdGuard implements CanActivate {
     const isGuest = userId === 'guest';
 
     if (userId) {
-      this.userService.setUserId(userId);
+      this.userService.setUser({ id: userId, name: userId }); // <-- TEMP fallback if only name is known
       this.guestService.setGuestMode(isGuest);
       console.log('[Guard] Set userId:', userId, '| guestMode:', isGuest);
     } else {

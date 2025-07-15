@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { UserApiService, User } from '../../helper/user-api.service';
 import { AuthService } from '../../helper/auth.service';
 import {HeaderComponent} from '../../navigation/header/header';
+import {UserService} from '../../helper/user.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private userApi: UserApiService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +54,9 @@ export class LoginComponent implements OnInit {
 
       this.userApi.setActiveStatus(user.id!, true).subscribe(() => {
         this.auth.login(user.name);
-        this.router.navigate(['/task-list', user.name]);
+        this.userService.setUser({ id: user.id!, name: user.name });
+        this.router.navigate(['/task-list', user.id]); // ✅ Use ID, not name
+
       });
     });
   }
@@ -70,7 +74,9 @@ export class LoginComponent implements OnInit {
     this.userApi.addUser(newUser).subscribe(user => {
       this.userApi.setActiveStatus(user.id!, true).subscribe(() => {
         this.auth.login(user.name);
-        this.router.navigate(['/task-list', user.name]);
+        this.userService.setUser({ id: user.id!, name: user.name });
+        this.router.navigate(['/task-list', user.id]); // ✅ Use ID, not name
+
       });
 
       this.existingUsernames.add(user.name.trim().toLowerCase());

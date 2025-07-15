@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   constructor(public auth: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.userId = this.auth.getUserId();
+    this.userId = this.auth.getUserId() ?? '';
   }
 
 

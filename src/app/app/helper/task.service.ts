@@ -49,11 +49,14 @@ export class TaskService {
   }
 
   addTask(text: string): Observable<Task> {
+    const userId = this.userService.getUserName();       // for routing
+    const userName = this.userService.getUserName();   // for task.userId field
+
     const newTask: Task = {
       text: text.trim(),
       checked: false,
       createdAt: Date.now(),
-      ...(this.isGuest() ? {} : { userId: this.userService.getUserId() })
+      ...(this.isGuest() ? {} : { userId: userName })   // store "tester1" in task.userId
     };
 
     if (this.isGuest()) {
@@ -61,7 +64,7 @@ export class TaskService {
       return of(newTask);
     }
 
-    return this.api.addTask(newTask);
+    return this.api.addTask(userId, newTask);          // use "1" for API URL
   }
 
   removeTask(task: Task): Observable<void> {
@@ -70,8 +73,19 @@ export class TaskService {
       return of(void 0);
     }
 
-    return this.api.deleteTask(task.id);
+    const userId = this.userService.getUserId();
+
+    if (!task.id || task.userId !== userId) {
+      console.warn('[removeTask] Skipping invalid or foreign task:', task);
+      return of(void 0);
+    }
+
+    return this.api.deleteTask(task.id, userId);
   }
+
+
+
+
 
   deleteWithLoading(
     task: Task,
@@ -184,7 +198,7 @@ export class TaskService {
       });
     }
 
-    return forkJoin(tasks.map(task => this.api.addTask(task)));
+    return forkJoin(tasks.map(task => this.api.addTask(this.userService.getUserId())));
   }
 
   private cancelClearSubject = new Subject<void>();

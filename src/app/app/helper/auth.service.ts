@@ -16,7 +16,9 @@ export class AuthService {
     return this.getUserId() !== 'guest';
   }
 
-  getUserId(): string {
-    return localStorage.getItem(this.STORAGE_KEY) || 'guest';
+  getUserId(): string | null {
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    return user?.id || null; // return the numeric ID
   }
+
 }
