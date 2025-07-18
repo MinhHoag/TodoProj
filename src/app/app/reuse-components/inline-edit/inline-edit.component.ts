@@ -31,7 +31,7 @@ export class InlineEditComponent {
       const inputEl = this.inputRef?.nativeElement;
       if (mirrorEl && inputEl) {
         const textWidth = mirrorEl.offsetWidth;
-        inputEl.style.width = `${textWidth + 8}px`; // Add buffer to match padding (4px + 4px)
+        inputEl.style.width = `${textWidth + 8}px`;
       }
     });
   }

@@ -30,12 +30,11 @@ export class HeaderComponent implements OnInit {
 
   logout(event: Event) {
     event.stopPropagation();
-    this.auth.logout();          // Clear storage
+    this.auth.logout();
     this.menuOpen = false;
 
-    // Navigate first to guest, then force reload
     this.router.navigate(['/task-list', 'guest']).then(() => {
-      window.location.reload(); // ✅ Hard reload the entire app
+      window.location.reload();
     });
   }
 

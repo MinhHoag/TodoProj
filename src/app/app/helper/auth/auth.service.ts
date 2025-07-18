@@ -22,10 +22,6 @@ export class AuthService {
     this.userService.resetUser();
   }
 
-  isLoggedIn(): boolean {
-    return this.getUserId() !== 'guest';
-  }
-
   getUserId(): string {
     return this.user?.id ?? 'guest';
   }
@@ -40,5 +36,9 @@ export class AuthService {
     if (this.user) {
       this.userService.setUser(this.user);
     }
+  }
+
+  isLoggedIn(): boolean {
+    return this.getUserId() !== 'guest';
   }
 }

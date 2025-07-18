@@ -11,17 +11,6 @@ export class UserService {
     this.userName$.next(user.name);
   }
 
-  getUserIdByName(name: string): string {
-    if (this.userName$.getValue() === name) {
-      return this.userId$.getValue();
-    }
-    return name;
-  }
-
-  setUserId(id: string) {
-    this.userId$.next(id);
-  }
-
   resetUser(): void {
     console.log('[UserService] Resetting user');
     this.userId$.next('');
@@ -40,6 +29,16 @@ export class UserService {
     return this.userId$.asObservable();
   }
 
+  getUserIdByName(name: string): string {
+    if (this.userName$.getValue() === name) {
+      return this.userId$.getValue();
+    }
+    return name;
+  }
+
+  setUserId(id: string) {
+    this.userId$.next(id);
+  }
 
   getUserName$() {
     return this.userName$.asObservable();
