@@ -108,7 +108,7 @@ export class TaskListComponent implements OnInit {
       }
     ).subscribe({
       next: () => {
-        this.loading = false;
+        window.location.reload();
       },
       error: () => {
         this.loadingMessage = 'Something went wrong!';
@@ -166,12 +166,6 @@ export class TaskListComponent implements OnInit {
 
 
 
-
-  generateDebugTasks(): void {
-    this.taskService.generateSampleTasks().subscribe(() => {
-      this.loadTasks();
-    });
-  }
 
 
 }

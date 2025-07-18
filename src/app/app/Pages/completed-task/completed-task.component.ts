@@ -12,7 +12,7 @@ import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.serv
   standalone: true,
   templateUrl: './completed-task.component.html',
   styleUrls: ['./completed-task.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent],
 })
 export class CompletedTaskComponent {
   tasks: (Task & { _selected?: boolean })[] = [];
@@ -49,7 +49,7 @@ export class CompletedTaskComponent {
     this.loadingMessage = 'Deleting completed tasks...';
     this.taskService.clearCompletedWithConfirm(this.confirm, () => this.loadCompletedTasks()).subscribe({
       next: () => {
-        this.loading = false;
+        window.location.reload();
       },
       error: () => {
         this.loadingMessage = 'Something went wrong!';

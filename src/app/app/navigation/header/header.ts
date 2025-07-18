@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // ✅ Required for ngIf/ngFor
+import {CommonModule, NgOptimizedImage} from '@angular/common'; // ✅ Required for ngIf/ngFor
 import { AuthService } from '../../helper/auth.service';
 
 @Component({
@@ -13,12 +13,14 @@ import { AuthService } from '../../helper/auth.service';
 export class HeaderComponent implements OnInit {
   userId: string = '';
   menuOpen: boolean = false;
-
+  username: string = '';
   constructor(public auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.userId = this.auth.getUserId() ?? '';
+    this.username = this.auth.getUsername() ?? '';
   }
+
 
 
   toggleMenu() {
@@ -27,9 +29,16 @@ export class HeaderComponent implements OnInit {
 
   logout(event: Event) {
     event.stopPropagation();
-    this.auth.logout();
+    this.auth.logout();          // Clear storage
     this.menuOpen = false;
-    this.router.navigate(['/task-list', 'guest']);
-    this.userId = 'guest';
+
+    // Navigate first to guest mode, then force reload
+    this.router.navigate(['/task-list', 'guest']).then(() => {
+      window.location.reload(); // ✅ Hard reload the entire app
+    });
   }
+
+
+
+
 }

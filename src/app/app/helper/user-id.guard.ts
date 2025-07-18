@@ -1,24 +1,50 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
-import { UserService } from './user.service';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
+import { AuthService } from './auth.service';
 import { GuestModeService } from './guest-mode.service';
+import { UserApiService } from './user-api.service';
+import { UserService } from './user.service';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserIdGuard implements CanActivate {
-  constructor(private userService: UserService, private guestService: GuestModeService) {}
+  constructor(
+    private auth: AuthService,
+    private guestService: GuestModeService,
+    private router: Router,
+    private userApi: UserApiService,
+    private userService: UserService
+  ) {}
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
-    const userId = route.paramMap.get('userId');
-    const isGuest = userId === 'guest';
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+    const routeUsername = route.paramMap.get('username');
+    const isGuest = routeUsername === 'guest';
 
-    if (userId) {
-      this.userService.setUser({ id: userId, name: userId }); // <-- TEMP fallback if only name is known
-      this.guestService.setGuestMode(isGuest);
-      console.log('[Guard] Set userId:', userId, '| guestMode:', isGuest);
-    } else {
-      console.warn('[Guard] No userId found!');
+    if (!routeUsername) {
+      this.router.navigate(['/not-found']);
+      return of(false);
     }
 
-    return true; // always allow
+    if (isGuest) {
+      this.guestService.setGuestMode(true);
+      return of(true);
+    }
+
+    return this.userApi.getAllUsers().pipe(
+      map(users => {
+        const user = users.find(u => u.name === routeUsername);
+        if (!user) {
+          console.warn(`[Guard] No user found with username '${routeUsername}'`);
+          this.router.navigate(['/not-found']);
+          return false;
+        }
+
+        this.auth.login({ id: user.id!, name: user.name });
+        this.userService.setUser({ id: user.id!, name: user.name });
+        this.guestService.setGuestMode(false);
+        return true;
+      })
+    );
   }
 }

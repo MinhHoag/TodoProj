@@ -1,23 +1,27 @@
 <header class="navbar">
   <div class="logo">
-    <a [routerLink]="['/task-list', userId]">TodoProj</a>
+    <a [routerLink]="['/task-list', username]">
+      <img src="assets/icon.png" alt="Logo" class="logo-icon" height="30px" width="auto" style="padding-right: 7px; top:5.5px; position:relative "/>
+      TodoProj
+    </a>
   </div>
+
 
   <nav class="nav-links">
     <a
-      [routerLink]="['/table', userId]"
+      [routerLink]="['/table', username]"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >Table</a>
 
     <a
-      [routerLink]="['/task-list', userId]"
+      [routerLink]="['/task-list', username]"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >Task list</a>
 
     <a
-      [routerLink]="['/completed-task', userId]"
+      [routerLink]="['/completed-task', username]"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >Completed</a>
@@ -27,16 +31,16 @@
   <div class="user-menu" (click)="toggleMenu()">
     <span class="user-label">
       <span class="user-icon">👤</span>
-      <strong>{{ userId }}</strong>
+      <strong>{{ username }}</strong>
     </span>
 
     <div class="dropdown-menu" [class.open]="menuOpen">
-      <ng-container *ngIf="userId === 'guest'; else loggedInBlock">
+      <ng-container *ngIf="username === 'guest'; else loggedInBlock">
         <a class="menu-link" [routerLink]="['/login']">Sign in</a>
       </ng-container>
 
       <ng-template #loggedInBlock>
-        <div class="menu-info">Logged in as <strong>{{ userId }}</strong></div>
+        <div class="menu-info">Logged in as <strong>{{ username }}</strong></div>
         <button class="menu-button" (click)="logout($event)">Logout</button>
       </ng-template>
     </div>

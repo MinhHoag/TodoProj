@@ -27,6 +27,7 @@ import {
   clearGuestTasks,
   markGuestTasksAsPushed
 } from './guest-task.store';
+import {AuthService} from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -35,7 +36,8 @@ export class TaskService {
   constructor(
     private api: TaskApiService,
     private userService: UserService,
-    private guestService: GuestModeService
+    private guestService: GuestModeService,
+    private auth: AuthService,
   ) {}
 
   private isGuest(): boolean {
@@ -43,13 +45,19 @@ export class TaskService {
   }
 
   getTasks(): Observable<Task[]> {
-    return this.isGuest()
-      ? of(loadGuestTasks())
-      : this.api.getListByUser(this.userService.getUserId());
+    const userId = this.userService.getUserId?.() || this.auth.getUserId?.(); // fallback
+
+    if (!userId || userId === 'guest') {
+      console.warn('[TaskService] Skipping getTasks(): Invalid userId →', userId);
+      return of([]); // return empty array instead of calling broken API
+    }
+
+    return this.api.getListByUser(userId);
   }
 
+
   addTask(text: string): Observable<Task> {
-    const userId = this.userService.getUserName();       // for routing
+    const userId = this.userService.getUserId?.() || this.auth.getUserId?.();
     const userName = this.userService.getUserName();   // for task.userId field
 
     const newTask: Task = {
@@ -64,7 +72,8 @@ export class TaskService {
       return of(newTask);
     }
 
-    return this.api.addTask(userId, newTask);          // use "1" for API URL
+    const task: Task = { ...newTask, userId };
+    return this.api.addTask(task);
   }
 
   removeTask(task: Task): Observable<void> {
@@ -183,23 +192,6 @@ export class TaskService {
     );
   }
 
-  generateSampleTasks(): Observable<Task[]> {
-    if (this.isGuest()) return of([]);
-
-    const userId = this.userService.getUserId();
-    const tasks: Task[] = [];
-
-    for (let i = 1; i <= 20; i++) {
-      tasks.push({
-        text: `Task ${i}`,
-        checked: false,
-        createdAt: Date.now(),
-        userId
-      });
-    }
-
-    return forkJoin(tasks.map(task => this.api.addTask(this.userService.getUserId())));
-  }
 
   private cancelClearSubject = new Subject<void>();
 

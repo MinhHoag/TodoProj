@@ -1,24 +1,45 @@
 import { Injectable } from '@angular/core';
+import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly STORAGE_KEY = 'todo-user-id';
+  private readonly STORAGE_KEY = 'user';
+  private user: { id: string; name: string } | null = null;
 
-  login(username: string) {
-    localStorage.setItem(this.STORAGE_KEY, username);
+  constructor(private userService: UserService) {
+    this.loadFromStorage();
   }
 
-  logout() {
+  private loadFromStorage(): void {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    this.user = stored ? JSON.parse(stored) : null;
+    if (this.user) {
+      this.userService.setUser(this.user); // Sync on load
+    }
+  }
+
+  login(user: { id: string; name: string }): void {
+    this.user = user;
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
+    this.userService.setUser(user); // Sync on login
+  }
+
+  logout(): void {
+    this.user = null;
     localStorage.removeItem(this.STORAGE_KEY);
+    this.userService.resetUser(); // 🔥 Clear BehaviorSubjects
   }
+
 
   isLoggedIn(): boolean {
     return this.getUserId() !== 'guest';
   }
 
-  getUserId(): string | null {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    return user?.id || null; // return the numeric ID
+  getUserId(): string {
+    return this.user?.id ?? 'guest';
   }
 
+  getUsername(): string {
+    return this.user?.name ?? 'guest';
+  }
 }

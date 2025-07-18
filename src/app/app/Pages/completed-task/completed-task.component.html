@@ -6,7 +6,7 @@
 <div *ngIf="loading" class="loading-overlay">
   <div class="spinner"></div>
   <p>{{ loadingMessage }}</p>
-  <button (click)="cancelClearAll()">Cancel</button>
+  <button (click)="cancelClearAll()" class="remove-button">Cancel</button>
 
 </div>
 <ul id="task-list" class="container">
@@ -25,6 +25,4 @@
   </li>
 </ul>
 
-<nav>
-  <a class="home-nav" routerLink="/task-list">⬅ Back to Task List</a>
-</nav>
+

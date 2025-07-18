@@ -23,6 +23,13 @@ export class UserService {
     this.userId$.next(id);
   }
 
+  resetUser(): void {
+    console.log('[UserService] Resetting user');
+    this.userId$.next('');
+    this.userName$.next('');
+  }
+
+
   getUserId(): string {
     return this.userId$.getValue();
   }
