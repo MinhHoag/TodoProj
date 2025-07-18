@@ -11,13 +11,11 @@ export class UserService {
     this.userName$.next(user.name);
   }
   getUserIdByName(name: string): string {
-    // if current user matches, return the stored id
     if (this.userName$.getValue() === name) {
-      return this.userId$.getValue(); // real MockAPI ID
+      return this.userId$.getValue();
     }
-    return name; // fallback
+    return name;
   }
-
 
   setUserId(id: string) {
     this.userId$.next(id);
@@ -29,6 +27,9 @@ export class UserService {
     this.userName$.next('');
   }
 
+  getUserName(): string {
+    return this.userName$.getValue();
+  }
 
   getUserId(): string {
     return this.userId$.getValue();
@@ -38,9 +39,6 @@ export class UserService {
     return this.userId$.asObservable();
   }
 
-  getUserName(): string {
-    return this.userName$.getValue();
-  }
 
   getUserName$() {
     return this.userName$.asObservable();

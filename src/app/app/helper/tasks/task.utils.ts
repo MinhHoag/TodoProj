@@ -1,6 +1,6 @@
 // task.utils.ts
 import { Task } from './task.model';
-import { ConfirmService } from '../reuse-components/confirm-dialog/confirm.service';
+import { ConfirmService } from '../../reuse-components/confirm-dialog/confirm.service';
 import {
   catchError,
   concatMap,
@@ -17,7 +17,7 @@ import {
   tap,
   toArray
 } from 'rxjs';
-import { TaskApiService } from './task-api.service';
+import { TaskApiService } from '../api/task-api.service';
 
 export function clearCompletedTasks(tasks: Task[]): Task[] {
   return tasks.filter(task => !task.checked);

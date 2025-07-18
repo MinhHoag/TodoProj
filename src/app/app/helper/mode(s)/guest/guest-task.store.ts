@@ -1,5 +1,5 @@
 // guest-task.store.ts
-import { Task } from './task.model';
+import { Task } from '../../tasks/task.model';
 
 let guestTasks: Task[] = [];
 

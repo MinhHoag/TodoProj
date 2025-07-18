@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserApiService, User } from '../../helper/user-api.service';
-import { AuthService } from '../../helper/auth.service';
+import { UserApiService, User } from '../../helper/api/user-api.service';
+import { AuthService } from '../../helper/auth/auth.service';
 import {HeaderComponent} from '../../navigation/header/header';
-import {UserService} from '../../helper/user.service';
+import {UserService} from '../../helper/mode(s)/user/user.service';
 
 @Component({
   selector: 'app-login',

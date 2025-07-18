@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
-import { AuthService } from './auth.service';
-import { GuestModeService } from './guest-mode.service';
-import { UserApiService } from './user-api.service';
+import { AuthService } from '../../auth/auth.service';
+import { GuestModeService } from '../guest/guest-mode.service';
+import { UserApiService } from '../../api/user-api.service';
 import { UserService } from './user.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';

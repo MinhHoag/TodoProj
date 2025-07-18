@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import {CommonModule, NgOptimizedImage} from '@angular/common'; // ✅ Required for ngIf/ngFor
-import { AuthService } from '../../helper/auth.service';
+import { AuthService } from '../../helper/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
     this.auth.logout();          // Clear storage
     this.menuOpen = false;
 
-    // Navigate first to guest mode, then force reload
+    // Navigate first to guest, then force reload
     this.router.navigate(['/task-list', 'guest']).then(() => {
       window.location.reload(); // ✅ Hard reload the entire app
     });

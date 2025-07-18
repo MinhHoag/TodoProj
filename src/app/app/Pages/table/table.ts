@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Task } from '../../helper/task.model';
+import { Task } from '../../helper/tasks/task.model';
 import { CommonModule, DatePipe } from '@angular/common';
-import { TaskService } from '../../helper/task.service';
+import { TaskService } from '../../helper/tasks/task.service';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../reuse-components/pagination/pagination.component';
 import { InlineEditComponent } from '../../reuse-components/inline-edit/inline-edit.component';

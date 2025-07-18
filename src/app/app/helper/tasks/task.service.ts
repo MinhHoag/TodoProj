@@ -8,16 +8,16 @@ import {
   switchMap,
   map
 } from 'rxjs';
-import { TaskApiService } from './task-api.service';
-import { ConfirmService } from '../reuse-components/confirm-dialog/confirm.service';
+import { TaskApiService } from '../api/task-api.service';
+import { ConfirmService } from '../../reuse-components/confirm-dialog/confirm.service';
 import {
   batchDelete,
   batchDeleteCompleted,
   confirmAndRun,
   withDeleteLoading
 } from './task.utils';
-import { UserService } from './user.service';
-import { GuestModeService } from './guest-mode.service';
+import { UserService } from '../mode(s)/user/user.service';
+import { GuestModeService } from '../mode(s)/guest/guest-mode.service';
 import {
   loadGuestTasks,
   saveGuestTasks,
@@ -26,8 +26,8 @@ import {
   updateGuestTask,
   clearGuestTasks,
   markGuestTasksAsPushed
-} from './guest-task.store';
-import {AuthService} from './auth.service';
+} from '../mode(s)/guest/guest-task.store';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
@@ -49,7 +49,7 @@ export class TaskService {
 
     if (!userId || userId === 'guest') {
       console.warn('[TaskService] Skipping getTasks(): Invalid userId →', userId);
-      return of([]); // return empty array instead of calling broken API
+      return of([]);
     }
 
     return this.api.getListByUser(userId);
@@ -58,13 +58,12 @@ export class TaskService {
 
   addTask(text: string): Observable<Task> {
     const userId = this.userService.getUserId?.() || this.auth.getUserId?.();
-    const userName = this.userService.getUserName();   // for task.userId field
-
+    const userName = this.userService.getUserName();
     const newTask: Task = {
       text: text.trim(),
       checked: false,
       createdAt: Date.now(),
-      ...(this.isGuest() ? {} : { userId: userName })   // store "tester1" in task.userId
+      ...(this.isGuest() ? {} : { userId: userName })
     };
 
     if (this.isGuest()) {

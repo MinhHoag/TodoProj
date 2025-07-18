@@ -3,7 +3,7 @@ export interface Task {
   id?: string;
   text: string;
   checked: boolean;
-  pushed?: boolean; // ✅ this represents "pushed to completed list"
+  pushed?: boolean;
   createdAt: number;
   userId?: string;
 }

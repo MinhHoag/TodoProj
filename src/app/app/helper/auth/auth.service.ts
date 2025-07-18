@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserService } from './user.service';
+import { UserService } from '../mode(s)/user/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -14,20 +14,20 @@ export class AuthService {
     const stored = localStorage.getItem(this.STORAGE_KEY);
     this.user = stored ? JSON.parse(stored) : null;
     if (this.user) {
-      this.userService.setUser(this.user); // Sync on load
+      this.userService.setUser(this.user);
     }
   }
 
   login(user: { id: string; name: string }): void {
     this.user = user;
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
-    this.userService.setUser(user); // Sync on login
+    this.userService.setUser(user);
   }
 
   logout(): void {
     this.user = null;
     localStorage.removeItem(this.STORAGE_KEY);
-    this.userService.resetUser(); // 🔥 Clear BehaviorSubjects
+    this.userService.resetUser();
   }
 
 

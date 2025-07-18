@@ -2,9 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {forkJoin, Observable} from 'rxjs';
-import { Task } from './task.model';
-import {GuestModeService} from './guest-mode.service';
-import {UserService} from './user.service';
+import { Task } from '../tasks/task.model';
+import {GuestModeService} from '../mode(s)/guest/guest-mode.service';
+import {UserService} from '../mode(s)/user/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class TaskApiService {

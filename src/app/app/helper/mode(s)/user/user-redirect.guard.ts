@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserRedirectGuard implements CanActivate {
@@ -9,6 +9,6 @@ export class UserRedirectGuard implements CanActivate {
   canActivate(): boolean {
     const userId = this.auth.getUserId() || 'guest';
     this.router.navigate(['/task-list', userId]);
-    return false; // prevent activation, we’re redirecting manually
+    return false;
   }
 }

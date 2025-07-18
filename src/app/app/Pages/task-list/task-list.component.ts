@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {TaskService} from '../../helper/task.service';
-import {Task} from '../../helper/task.model';
+import {TaskService} from '../../helper/tasks/task.service';
+import {Task} from '../../helper/tasks/task.model';
 import {RouterModule} from '@angular/router';
 import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
 import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
 import {MatButton} from '@angular/material/button';
 import {HeaderComponent} from '../../navigation/header/header';
-import {confirmAndRun, sortTasks} from '../../helper/task.utils';
+import {confirmAndRun, sortTasks} from '../../helper/tasks/task.utils';
 import {tap} from 'rxjs';
 import {subscribe} from '@angular/fire/data-connect';
 

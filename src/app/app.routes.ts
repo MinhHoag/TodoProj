@@ -4,9 +4,9 @@ import { CompletedTaskComponent } from './app/Pages/completed-task/completed-tas
 import { TaskTableComponent } from './app/Pages/table/table';
 import { LoginComponent } from './app/Pages/login/login.component';
 
-import { UserIdGuard } from './app/helper/user-id.guard';
-import { UserRedirectGuard } from './app/helper/user-redirect.guard';
-import { DummyRedirectComponent } from './app/helper/dummy-redirect.component';
+import { UserIdGuard } from './app/helper/mode(s)/user/user-id.guard';
+import { UserRedirectGuard } from './app/helper/mode(s)/user/user-redirect.guard';
+import { DummyRedirectComponent } from './app/helper/mode(s)/guest/dummy-redirect.component';
 import {NotFound} from './app/Pages/not-found/not-found'; // <- add this
 
 export const routes: Routes = [
