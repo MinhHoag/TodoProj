@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UserService {
   private userId$ = new BehaviorSubject<string>('');   // Numeric ID for API routing
   private userName$ = new BehaviorSubject<string>(''); // Username for task tagging
@@ -10,6 +10,7 @@ export class UserService {
     this.userId$.next(user.id);
     this.userName$.next(user.name);
   }
+
   getUserIdByName(name: string): string {
     if (this.userName$.getValue() === name) {
       return this.userId$.getValue();

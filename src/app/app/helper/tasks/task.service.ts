@@ -1,47 +1,37 @@
-import { Injectable } from '@angular/core';
-import { Task } from './task.model';
+import {Injectable} from '@angular/core';
+import {Task} from './task.model';
+import {forkJoin, map, Observable, of, Subject, switchMap} from 'rxjs';
+import {TaskApiService} from '../api/task-api.service';
+import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
+import {batchDelete, batchDeleteCompleted, confirmAndRun, withDeleteLoading} from './task.utils';
+import {UserService} from '../mode(s)/user/user.service';
+import {GuestModeService} from '../mode(s)/guest/guest-mode.service';
 import {
-  forkJoin,
-  Observable,
-  of,
-  Subject,
-  switchMap,
-  map
-} from 'rxjs';
-import { TaskApiService } from '../api/task-api.service';
-import { ConfirmService } from '../../reuse-components/confirm-dialog/confirm.service';
-import {
-  batchDelete,
-  batchDeleteCompleted,
-  confirmAndRun,
-  withDeleteLoading
-} from './task.utils';
-import { UserService } from '../mode(s)/user/user.service';
-import { GuestModeService } from '../mode(s)/guest/guest-mode.service';
-import {
-  loadGuestTasks,
-  saveGuestTasks,
   addGuestTask,
-  removeGuestTask,
-  updateGuestTask,
   clearGuestTasks,
-  markGuestTasksAsPushed
+  loadGuestTasks,
+  markGuestTasksAsPushed,
+  removeGuestTask,
+  updateGuestTask
 } from '../mode(s)/guest/guest-task.store';
 import {AuthService} from '../auth/auth.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class TaskService {
+  cancelClearCompleted$ = new Subject<void>();
   private completedTasks: Task[] = [];
+  private cancelClearSubject = new Subject<void>();
 
   constructor(
     private api: TaskApiService,
     private userService: UserService,
     private guestService: GuestModeService,
     private auth: AuthService,
-  ) {}
+  ) {
+  }
 
-  private isGuest(): boolean {
-    return this.guestService.isGuest();
+  get cancelClear$(): Observable<void> {
+    return this.cancelClearSubject.asObservable();
   }
 
   getTasks(): Observable<Task[]> {
@@ -55,7 +45,6 @@ export class TaskService {
     return this.api.getListByUser(userId);
   }
 
-
   addTask(text: string): Observable<Task> {
     const userId = this.userService.getUserId?.() || this.auth.getUserId?.();
     const userName = this.userService.getUserName();
@@ -63,7 +52,7 @@ export class TaskService {
       text: text.trim(),
       checked: false,
       createdAt: Date.now(),
-      ...(this.isGuest() ? {} : { userId: userName })
+      ...(this.isGuest() ? {} : {userId: userName})
     };
 
     if (this.isGuest()) {
@@ -71,7 +60,7 @@ export class TaskService {
       return of(newTask);
     }
 
-    const task: Task = { ...newTask, userId };
+    const task: Task = {...newTask, userId};
     return this.api.addTask(task);
   }
 
@@ -90,10 +79,6 @@ export class TaskService {
 
     return this.api.deleteTask(task.id, userId);
   }
-
-
-
-
 
   deleteWithLoading(
     task: Task,
@@ -118,14 +103,14 @@ export class TaskService {
   }
 
   updateTaskChecked(task: Task, checked: boolean): Observable<Task> {
-    const updated = { ...task, checked };
+    const updated = {...task, checked};
     return this.isGuest()
       ? (updateGuestTask(updated), of(updated))
       : this.api.updateTask(updated);
   }
 
   updateTaskText(task: Task, newText: string): Observable<Task> {
-    const updated = { ...task, text: newText };
+    const updated = {...task, text: newText};
     return this.isGuest()
       ? (updateGuestTask(updated), of(updated))
       : this.api.updateTask(updated);
@@ -155,7 +140,7 @@ export class TaskService {
       map(tasks => tasks.filter(t => t.checked && !t.pushed)),
       switchMap(completed =>
         forkJoin(completed.map(task =>
-          this.api.updateTask({ ...task, pushed: true })
+          this.api.updateTask({...task, pushed: true})
         ))
       )
     );
@@ -186,16 +171,9 @@ export class TaskService {
 
     return forkJoin(
       tasks.map(task =>
-        this.api.updateTask({ ...task, checked: false, pushed: false })
+        this.api.updateTask({...task, checked: false, pushed: false})
       )
     );
-  }
-
-
-  private cancelClearSubject = new Subject<void>();
-
-  get cancelClear$(): Observable<void> {
-    return this.cancelClearSubject.asObservable();
   }
 
   cancelClear(): void {
@@ -217,8 +195,6 @@ export class TaskService {
       batchDelete(() => this.getTasks(), task => this.removeTask(task), t => !t.checked, onDelete, this.cancelClear$)
     );
   }
-
-  cancelClearCompleted$ = new Subject<void>();
 
   cancelClearCompleted(): void {
     this.cancelClearCompleted$.next();
@@ -247,5 +223,9 @@ export class TaskService {
     return confirmAndRun(confirm, 'Clear all completed tasks?', () =>
       this.clearCompletedRecursively(onDelete, this.cancelClearCompleted$)
     );
+  }
+
+  private isGuest(): boolean {
+    return this.guestService.isGuest();
   }
 }

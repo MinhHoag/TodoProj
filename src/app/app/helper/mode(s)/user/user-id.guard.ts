@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
-import { AuthService } from '../../auth/auth.service';
-import { GuestModeService } from '../guest/guest-mode.service';
-import { UserApiService } from '../../api/user-api.service';
-import { UserService } from './user.service';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router} from '@angular/router';
+import {AuthService} from '../../auth/auth.service';
+import {GuestModeService} from '../guest/guest-mode.service';
+import {UserApiService} from '../../api/user-api.service';
+import {UserService} from './user.service';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UserIdGuard implements CanActivate {
   constructor(
     private auth: AuthService,
@@ -15,7 +15,8 @@ export class UserIdGuard implements CanActivate {
     private router: Router,
     private userApi: UserApiService,
     private userService: UserService
-  ) {}
+  ) {
+  }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const routeUsername = route.paramMap.get('username');
@@ -40,8 +41,8 @@ export class UserIdGuard implements CanActivate {
           return false;
         }
 
-        this.auth.login({ id: user.id!, name: user.name });
-        this.userService.setUser({ id: user.id!, name: user.name });
+        this.auth.login({id: user.id!, name: user.name});
+        this.userService.setUser({id: user.id!, name: user.name});
         this.guestService.setGuestMode(false);
         return true;
       })

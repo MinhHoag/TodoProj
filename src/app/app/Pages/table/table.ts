@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Task } from '../../helper/tasks/task.model';
-import { CommonModule, DatePipe } from '@angular/common';
-import { TaskService } from '../../helper/tasks/task.service';
-import { FormsModule } from '@angular/forms';
-import { PaginationComponent } from '../../reuse-components/pagination/pagination.component';
-import { InlineEditComponent } from '../../reuse-components/inline-edit/inline-edit.component';
-import { HeaderComponent } from '../../navigation/header/header';
+import {Component, OnInit} from '@angular/core';
+import {Task} from '../../helper/tasks/task.model';
+import {CommonModule, DatePipe} from '@angular/common';
+import {TaskService} from '../../helper/tasks/task.service';
+import {FormsModule} from '@angular/forms';
+import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
+import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
+import {HeaderComponent} from '../../navigation/header/header';
 
 @Component({
   selector: 'app-task-table',
@@ -26,8 +26,15 @@ export class TaskTableComponent implements OnInit {
   userList: Task[] = [];
   currentPage = 1;
   pageSize = 10;
+  protected readonly Math = Math;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService) {
+  }
+
+  get pagedTasks(): Task[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.userList.slice(start, start + this.pageSize);
+  }
 
   ngOnInit(): void {
     this.loadTasks();
@@ -42,11 +49,6 @@ export class TaskTableComponent implements OnInit {
       },
       error: (err: any) => console.error('Error fetching data:', err)
     });
-  }
-
-  get pagedTasks(): Task[] {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.userList.slice(start, start + this.pageSize);
   }
 
   onTaskTextChange(task: Task, newText: string | number): void {
@@ -84,6 +86,4 @@ export class TaskTableComponent implements OnInit {
     this.currentPage = event.page;
     this.pageSize = event.pageSize;
   }
-
-  protected readonly Math = Math;
 }

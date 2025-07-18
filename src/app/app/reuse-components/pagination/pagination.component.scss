@@ -27,6 +27,7 @@
   min-width: 100px;
   text-align: center;
 }
+
 .page-inline-edit {
   display: flex;
   align-items: center;
@@ -38,7 +39,7 @@
 input[type="number"] {
   appearance: auto;
   -moz-appearance: textfield; /* Firefox */
-  -webkit-appearance: none;   /* Chrome/Safari override */
+  -webkit-appearance: none; /* Chrome/Safari override */
   margin: 0;
 
   /* Reset styles if needed */
@@ -61,9 +62,11 @@ input[type="number"] {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 .app-inline-edit .displayValue {
-  color:purple;
+  color: purple;
 }
+
 .page-buttons {
   display: flex;
   gap: 1px;

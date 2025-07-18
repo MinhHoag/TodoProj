@@ -7,11 +7,8 @@ import {RouterModule} from '@angular/router';
 import {PaginationComponent} from '../../reuse-components/pagination/pagination.component';
 import {InlineEditComponent} from '../../reuse-components/inline-edit/inline-edit.component';
 import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
-import {MatButton} from '@angular/material/button';
 import {HeaderComponent} from '../../navigation/header/header';
-import {confirmAndRun, sortTasks} from '../../helper/tasks/task.utils';
-import {tap} from 'rxjs';
-import {subscribe} from '@angular/fire/data-connect';
+import {sortTasks} from '../../helper/tasks/task.utils';
 
 
 @Component({
@@ -31,17 +28,6 @@ export class TaskListComponent implements OnInit {
   loading = false;
   loadingMessage = '';
 
-
-  ngOnInit() {
-    setTimeout(() => {
-      console.log('[TaskListComponent] userId =', this.taskService['userService'].getUserId());
-      console.log('[TaskListComponent] isGuest =', this.taskService['guestService'].isGuest());
-      this.loadTasks();
-    });
-  }
-
-
-
   constructor(private confirm: ConfirmService, private taskService: TaskService) {
   }
 
@@ -51,13 +37,28 @@ export class TaskListComponent implements OnInit {
     return this.filteredTasks.slice(start, start + this.pageSize);
   }
 
+  //check if task empty or existed
+  get isAddDisabled(): boolean {
+    const trimmed = this.newTaskText.trim();
+    return !trimmed || this.tasks.some(task => task.text === trimmed);
+  }
+
   //updating data
+
+  ngOnInit() {
+    setTimeout(() => {
+      console.log('[TaskListComponent] userId =', this.taskService['userService'].getUserId());
+      console.log('[TaskListComponent] isGuest =', this.taskService['guestService'].isGuest());
+      this.loadTasks();
+    });
+  }
 
   //turning page
   onPageChange(event: { page: number; pageSize: number }) {
     this.currentPage = event.page;
     this.pageSize = event.pageSize;
   }
+
   //ticking checkboxes
   onCheckboxChange(event: Event, task: Task): void {
     const checkbox = event.target as HTMLInputElement;
@@ -77,6 +78,7 @@ export class TaskListComponent implements OnInit {
       this.applySearch(); // filter based on current query
     });
   }
+
 //search task
   applySearch() {
     const query = this.searchQuery.trim().toLowerCase();
@@ -84,6 +86,7 @@ export class TaskListComponent implements OnInit {
       ? [...this.tasks]
       : this.tasks.filter(task => task.text.toLowerCase().includes(query));
   }
+
 //remove button
   removeTask(task: Task): void {
     this.taskService.deleteWithLoading(
@@ -92,8 +95,6 @@ export class TaskListComponent implements OnInit {
       msg => this.loadingMessage = msg
     ).subscribe(() => this.loadTasks());
   }
-
-
 
 //clear all
   clearAllWithConfirm(): void {
@@ -119,6 +120,7 @@ export class TaskListComponent implements OnInit {
       }
     });
   }
+
   //cancel clear all
   cancelLoading() {
     this.taskService.cancelClear();
@@ -128,6 +130,7 @@ export class TaskListComponent implements OnInit {
       this.loadingMessage = '';
     }, 300);
   }
+
 //push to completed task
   pushCompletedTasks(): void {
     this.taskService.pushCompleted().subscribe(() => {
@@ -141,11 +144,6 @@ export class TaskListComponent implements OnInit {
       this.loadTasks();
       this.newTaskText = '';
     });
-  }
-  //check if task empty or existed
-  get isAddDisabled(): boolean {
-    const trimmed = this.newTaskText.trim();
-    return !trimmed || this.tasks.some(task => task.text === trimmed);
   }
 
   //change task
@@ -163,9 +161,6 @@ export class TaskListComponent implements OnInit {
       this.addTask();
     }
   }
-
-
-
 
 
 }

@@ -2,10 +2,10 @@
 <div class="fixed-pagination">
   <div class="pagination">
     <app-pagination
-      [totalItems]="tasks.length"
-      [pageSize]="pageSize"
+      (pageChange)="onPageChange($event)"
       [currentPage]="currentPage"
-      (pageChange)="onPageChange($event)">
+      [pageSize]="pageSize"
+      [totalItems]="tasks.length">
     </app-pagination>
     <span>&#8203;</span></div>
 </div>
@@ -25,20 +25,20 @@
     <td>{{ task.id }}</td>
     <td>
       <app-inline-edit
-        [value]="task.text"
-        (valueChange)="onTaskTextChange(task, $event)">
+        (valueChange)="onTaskTextChange(task, $event)"
+        [value]="task.text">
       </app-inline-edit>
     </td>
     <td>
-      <input class="checkbox"
-             type="checkbox"
+      <input #checkbox
+             (change)="onCheckedChange(task, checkbox.checked)"
              [checked]="task.checked"
-             #checkbox
-             (change)="onCheckedChange(task, checkbox.checked)"/>
+             class="checkbox"
+             type="checkbox"/>
     </td>
     <td>{{ task.createdAt * 1000 | date: 'dd/MM/yyyy HH:mm' }}</td>
     <td colspan="4" style="text-align: right;">
-      <button class="delete-button" (click)="deleteTask(task)">🗑</button>
+      <button (click)="deleteTask(task)" class="delete-button">🗑</button>
     </td>
 
 

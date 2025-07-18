@@ -1,7 +1,8 @@
 <header class="navbar">
   <div class="logo">
     <a [routerLink]="['/task-list', username]">
-      <img src="assets/icon.png" alt="Logo" class="logo-icon" height="30px" width="auto" style="padding-right: 7px; top:5.5px; position:relative "/>
+      <img alt="Logo" class="logo-icon" height="30px" src="assets/icon.png" style="padding-right: 7px; top:5.5px; position:relative "
+           width="auto"/>
       TodoProj
     </a>
   </div>
@@ -9,39 +10,39 @@
 
   <nav class="nav-links">
     <a
+      [routerLinkActiveOptions]="{ exact: true }"
       [routerLink]="['/table', username]"
       routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
     >Table</a>
 
     <a
+      [routerLinkActiveOptions]="{ exact: true }"
       [routerLink]="['/task-list', username]"
       routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
     >Task list</a>
 
     <a
+      [routerLinkActiveOptions]="{ exact: true }"
       [routerLink]="['/completed-task', username]"
       routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
     >Completed</a>
   </nav>
 
 
-  <div class="user-menu" (click)="toggleMenu()">
+  <div (click)="toggleMenu()" class="user-menu">
     <span class="user-label">
       <span class="user-icon">👤</span>
       <strong>{{ username }}</strong>
     </span>
 
-    <div class="dropdown-menu" [class.open]="menuOpen">
+    <div [class.open]="menuOpen" class="dropdown-menu">
       <ng-container *ngIf="username === 'guest'; else loggedInBlock">
-        <a class="menu-link" [routerLink]="['/login']">Sign in</a>
+        <a [routerLink]="['/login']" class="menu-link">Sign in</a>
       </ng-container>
 
       <ng-template #loggedInBlock>
         <div class="menu-info">Logged in as <strong>{{ username }}</strong></div>
-        <button class="menu-button" (click)="logout($event)">Logout</button>
+        <button (click)="logout($event)" class="menu-button">Logout</button>
       </ng-template>
     </div>
   </div> <!-- ✅ ← THIS closes .user-menu -->

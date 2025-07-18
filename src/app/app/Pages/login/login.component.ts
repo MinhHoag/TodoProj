@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { UserApiService, User } from '../../helper/api/user-api.service';
-import { AuthService } from '../../helper/auth/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {User, UserApiService} from '../../helper/api/user-api.service';
+import {AuthService} from '../../helper/auth/auth.service';
 import {HeaderComponent} from '../../navigation/header/header';
 import {UserService} from '../../helper/mode(s)/user/user.service';
 
@@ -25,12 +25,7 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     private userService: UserService,
-  ) {}
-
-  ngOnInit(): void {
-    this.userApi.getAllUsers().subscribe(users => {
-      this.existingUsernames = new Set(users.map(user => user.name.trim().toLowerCase()));
-    });
+  ) {
   }
 
   get usernameExists(): boolean {
@@ -39,6 +34,12 @@ export class LoginComponent implements OnInit {
 
   get isUsernameValid(): boolean {
     return this.username.trim().length > 0 && !/\s/.test(this.username);
+  }
+
+  ngOnInit(): void {
+    this.userApi.getAllUsers().subscribe(users => {
+      this.existingUsernames = new Set(users.map(user => user.name.trim().toLowerCase()));
+    });
   }
 
   login() {
@@ -53,8 +54,8 @@ export class LoginComponent implements OnInit {
       }
 
       this.userApi.setActiveStatus(user.id!, true).subscribe(() => {
-        this.auth.login({ id: user.id ?? 'guest', name: user.name });
-        this.userService.setUser({ id: user.id!, name: user.name });
+        this.auth.login({id: user.id ?? 'guest', name: user.name});
+        this.userService.setUser({id: user.id!, name: user.name});
 
         // ✅ Navigate using username
         this.router.navigate(['/task-list', user.name]);
@@ -74,8 +75,8 @@ export class LoginComponent implements OnInit {
 
     this.userApi.addUser(newUser).subscribe(user => {
       this.userApi.setActiveStatus(user.id!, true).subscribe(() => {
-        this.auth.login({ id: user.id ?? 'guest', name: user.name });
-        this.userService.setUser({ id: user.id!, name: user.name });
+        this.auth.login({id: user.id ?? 'guest', name: user.name});
+        this.userService.setUser({id: user.id!, name: user.name});
 
         // ✅ Navigate using username
         this.router.navigate(['/task-list', user.name]);

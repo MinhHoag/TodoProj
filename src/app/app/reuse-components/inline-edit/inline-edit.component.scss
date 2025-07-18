@@ -16,9 +16,11 @@
   box-sizing: content-box;
 
 }
-.inline-edit.completed{
+
+.inline-edit.completed {
   text-decoration: line-through;
 }
+
 .mirror-span {
   position: absolute;
   visibility: hidden;

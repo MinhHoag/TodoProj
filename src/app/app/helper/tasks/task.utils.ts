@@ -1,11 +1,12 @@
 // task.utils.ts
-import { Task } from './task.model';
-import { ConfirmService } from '../../reuse-components/confirm-dialog/confirm.service';
+import {Task} from './task.model';
+import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
 import {
   catchError,
   concatMap,
   delay,
-  EMPTY, finalize,
+  EMPTY,
+  finalize,
   forkJoin,
   from,
   map,
@@ -17,7 +18,6 @@ import {
   tap,
   toArray
 } from 'rxjs';
-import { TaskApiService } from '../api/task-api.service';
 
 export function clearCompletedTasks(tasks: Task[]): Task[] {
   return tasks.filter(task => !task.checked);
@@ -37,7 +37,7 @@ export function addTask(tasks: Task[], newTaskText: string, userId: string): Tas
     return tasks;
   }
 
-  const newTask: Task = { text: trimmedText, checked: false, createdAt: Date.now(), userId: userId };
+  const newTask: Task = {text: trimmedText, checked: false, createdAt: Date.now(), userId: userId};
   const index = tasks.findIndex(task => task.checked);
   const updatedTasks = [...tasks];
 
@@ -141,6 +141,7 @@ export function bulkDelete(
     })
   );
 }
+
 export function batchDeleteCompleted(
   getTasks: () => Observable<Task[]>,
   deleteTask: (task: Task) => Observable<any>,
@@ -150,6 +151,7 @@ export function batchDeleteCompleted(
 ): Observable<void> {
   return batchDelete(getTasks, deleteTask, t => t.checked, onDelete, cancelSignal, batchSize);
 }
+
 export function bulkDeleteCompleted(
   getTasks: () => Observable<Task[]>,
   deleteTask: (task: Task) => Observable<any>,

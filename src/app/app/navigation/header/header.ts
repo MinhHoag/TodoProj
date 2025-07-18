@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import {CommonModule, NgOptimizedImage} from '@angular/common'; // ✅ Required for ngIf/ngFor
-import { AuthService } from '../../helper/auth/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
+import {CommonModule} from '@angular/common'; // ✅ Required for ngIf/ngFor
+import {AuthService} from '../../helper/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -14,13 +14,14 @@ export class HeaderComponent implements OnInit {
   userId: string = '';
   menuOpen: boolean = false;
   username: string = '';
-  constructor(public auth: AuthService, private router: Router) {}
+
+  constructor(public auth: AuthService, private router: Router) {
+  }
 
   ngOnInit() {
     this.userId = this.auth.getUserId() ?? '';
     this.username = this.auth.getUsername() ?? '';
   }
-
 
 
   toggleMenu() {
@@ -37,8 +38,6 @@ export class HeaderComponent implements OnInit {
       window.location.reload(); // ✅ Hard reload the entire app
     });
   }
-
-
 
 
 }

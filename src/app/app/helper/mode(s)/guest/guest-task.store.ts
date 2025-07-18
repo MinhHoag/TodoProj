@@ -1,5 +1,5 @@
 // guest-task.store.ts
-import { Task } from '../../tasks/task.model';
+import {Task} from '../../tasks/task.model';
 
 let guestTasks: Task[] = [];
 
@@ -31,7 +31,7 @@ export function clearGuestTasks(): void {
 
 export function markGuestTasksAsPushed(): Task[] {
   guestTasks = guestTasks.map(t =>
-    t.checked && !t.pushed ? { ...t, pushed: true } : t
+    t.checked && !t.pushed ? {...t, pushed: true} : t
   );
   return guestTasks.filter(t => t.pushed);
 }

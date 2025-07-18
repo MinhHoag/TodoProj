@@ -1,6 +1,6 @@
 // user-api.service.ts
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
 export interface User {
   id?: string;
@@ -10,11 +10,12 @@ export interface User {
   active?: boolean;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UserApiService {
   private apiUrl = 'https://685a19f09f6ef961115509c9.mockapi.io/user';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getAllUsers() {
     return this.http.get<User[]>(this.apiUrl);
@@ -25,6 +26,6 @@ export class UserApiService {
   }
 
   setActiveStatus(id: string, active: boolean) {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, { active });
+    return this.http.put<User>(`${this.apiUrl}/${id}`, {active});
   }
 }

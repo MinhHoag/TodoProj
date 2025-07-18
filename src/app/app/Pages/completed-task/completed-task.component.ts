@@ -3,7 +3,6 @@ import {FormsModule} from '@angular/forms';
 import {TaskService} from '../../helper/tasks/task.service';
 import {Component} from '@angular/core';
 import {Task} from '../../helper/tasks/task.model';
-import {RouterLink} from '@angular/router';
 import {HeaderComponent} from '../../navigation/header/header';
 import {ConfirmService} from '../../reuse-components/confirm-dialog/confirm.service';
 

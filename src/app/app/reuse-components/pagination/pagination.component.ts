@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
 import {InlineEditComponent} from '../inline-edit/inline-edit.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
@@ -35,19 +35,19 @@ export class PaginationComponent {
     const newPage = this.currentPage + delta;
     if (newPage >= 1 && newPage <= this.totalPages) {
       this.currentPage = newPage;
-      this.pageChange.emit({ page: newPage, pageSize: this.pageSize });
+      this.pageChange.emit({page: newPage, pageSize: this.pageSize});
     }
   }
 
   goToPage(page: string | number): void {
     const num = Math.max(1, Math.min(this.totalPages, Number(page)));
     this.currentPage = num;
-    this.pageChange.emit({ page: num, pageSize: this.pageSize });
+    this.pageChange.emit({page: num, pageSize: this.pageSize});
   }
 
   onPageSizeChange() {
     this.currentPage = 1;
-    this.pageChange.emit({ page: this.currentPage, pageSize: this.pageSize });
+    this.pageChange.emit({page: this.currentPage, pageSize: this.pageSize});
   }
 
   @HostListener('window:keydown', ['$event'])

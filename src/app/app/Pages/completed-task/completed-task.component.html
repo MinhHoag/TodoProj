@@ -9,7 +9,7 @@
   <button (click)="cancelClearAll()" class="remove-button">Cancel</button>
 
 </div>
-<ul id="task-list" class="container">
+<ul class="container" id="task-list">
   <div class="task-header">
     <div>Total completed: <span class="task-length">{{ tasks.length }}</span></div>
     <div class="clear-action">
@@ -18,7 +18,7 @@
   </div>
   <li *ngFor="let task of tasks" class="adding">
     <div class="task-content">
-      <input type="checkbox" [(ngModel)]="task._selected"/>
+      <input [(ngModel)]="task._selected" type="checkbox"/>
       <span>{{ task.text }}</span>
       <button (click)="remove(task)" class="remove-button">X</button>
     </div>

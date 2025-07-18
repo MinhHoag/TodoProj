@@ -1,28 +1,27 @@
 <app-header></app-header>
 <div class="search-wrapper">
   <input
-    [(ngModel)]="searchQuery"
     (input)="applySearch()"
-    type="text"
-    placeholder="🔍 Search tasks..."
+    [(ngModel)]="searchQuery"
     class="search-box"
+    placeholder="🔍 Search tasks..."
+    type="text"
   />
 </div>
 
 
-
 <div class="input-wrapper">
   <input
-    [(ngModel)]="newTaskText"
     #taskInput
     (keydown.enter)="onEnter(taskInput)"
+    [(ngModel)]="newTaskText"
     placeholder="Add task"
     type="text"
   />
   <button (click)="addTask()"
-          class="add-button"
+          [class.disabled]="isAddDisabled"
           [disabled]="isAddDisabled"
-          [class.disabled]="isAddDisabled">Add
+          class="add-button">Add
   </button>
 
 
@@ -39,13 +38,13 @@
 
 <div style="display: flex; justify-content:center; margin-bottom: 23px ">
   <app-pagination
-    [totalItems]="tasks.length"
-    [pageSize]="pageSize"
+    (pageChange)="onPageChange($event)"
     [currentPage]="currentPage"
-    (pageChange)="onPageChange($event)">
+    [pageSize]="pageSize"
+    [totalItems]="tasks.length">
   </app-pagination>
 </div>
-<ul id="task-list" class="container">
+<ul class="container" id="task-list">
   <div class="task-header">
     <div class="task-count">
       Total tasks: <span class="task-length">{{ tasks.length }}</span>
@@ -56,21 +55,21 @@
     </div>
   </div>
 
-  <li *ngFor="let task of pagedTasks" class="adding" [class.complete]="task.checked">
+  <li *ngFor="let task of pagedTasks" [class.complete]="task.checked" class="adding">
     <div class="task-content">
       <input
-        type="checkbox"
-        [checked]="task.checked"
         (change)="onCheckboxChange($event, task)"
+        [checked]="task.checked"
+        type="checkbox"
       />
 
 
       <app-inline-edit
-        [value]="task.text"
         (valueChange)="updateTaskText(task, $event)"
+        [class.completed]="task.checked"
         [isChecked]="task.checked"
         [ngClass]="{ 'completed': task.checked }"
-        [class.completed]="task.checked">
+        [value]="task.text">
       </app-inline-edit>
     </div>
 

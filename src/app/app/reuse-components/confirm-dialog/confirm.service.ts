@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from './confirm-dialog.component'; // adjust the path
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogComponent} from './confirm-dialog.component'; // adjust the path
+import {Observable} from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ConfirmService {
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) {
+  }
 
   open(message: string): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

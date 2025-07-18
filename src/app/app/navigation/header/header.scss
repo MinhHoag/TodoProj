@@ -10,7 +10,7 @@
 }
 
 .logo a {
-  height:auto;
+  height: auto;
   margin-left: 7px;
   color: white;
   text-decoration: none;
@@ -31,6 +31,7 @@
 .nav-links a.active {
   text-decoration: underline;
 }
+
 .user-menu {
   display: inline-block;
   padding: 6px 12px;
@@ -49,7 +50,7 @@
   padding: 8px 12px;
   background: white;
   border: 1px solid #ccc;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   z-index: 99;
   min-width: 150px;
 }
@@ -59,6 +60,7 @@
   justify-content: center;
 
 }
+
 .user-menu {
   position: relative;
   display: inline-block;
@@ -102,11 +104,13 @@
       color: #3b3bbd;
       font-weight: 500;
     }
-      .menu-link:hover {
-        color: rgba(59, 59, 189, 0.84);
 
-        text-decoration: underline;
-      }
+    .menu-link:hover {
+      color: rgba(59, 59, 189, 0.84);
+
+      text-decoration: underline;
+    }
+
     .logo {
       display: flex;
       align-items: center;
@@ -121,6 +125,7 @@
         text-decoration: none;
 
       }
+
       img.logo-icon {
         height: 28px;
         width: 28px;
@@ -132,10 +137,6 @@
 
 
     }
-
-
-
-
 
 
     .menu-info {

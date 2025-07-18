@@ -1,11 +1,6 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter, ViewChild, ElementRef
-} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-inline-edit',
@@ -29,6 +24,7 @@ export class InlineEditComponent {
 
   editing = false;
   localValue: string | number = '';
+
   resizeInput() {
     setTimeout(() => {
       const mirrorEl = this.mirror?.nativeElement;
@@ -42,7 +38,7 @@ export class InlineEditComponent {
 
 
   startEdit() {
-    if(!this.isChecked) {
+    if (!this.isChecked) {
       this.localValue = this.value;
       this.editing = true;
       console.log('Switched to editing mode');
@@ -51,7 +47,8 @@ export class InlineEditComponent {
         this.resizeInput();
         this.inputRef?.nativeElement.focus();
         this.inputRef?.nativeElement.select();
-    })}
+      })
+    }
   }
 
 

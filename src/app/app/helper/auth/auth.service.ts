@@ -1,21 +1,13 @@
-import { Injectable } from '@angular/core';
-import { UserService } from '../mode(s)/user/user.service';
+import {Injectable} from '@angular/core';
+import {UserService} from '../mode(s)/user/user.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthService {
   private readonly STORAGE_KEY = 'user';
   private user: { id: string; name: string } | null = null;
 
   constructor(private userService: UserService) {
     this.loadFromStorage();
-  }
-
-  private loadFromStorage(): void {
-    const stored = localStorage.getItem(this.STORAGE_KEY);
-    this.user = stored ? JSON.parse(stored) : null;
-    if (this.user) {
-      this.userService.setUser(this.user);
-    }
   }
 
   login(user: { id: string; name: string }): void {
@@ -30,7 +22,6 @@ export class AuthService {
     this.userService.resetUser();
   }
 
-
   isLoggedIn(): boolean {
     return this.getUserId() !== 'guest';
   }
@@ -41,5 +32,13 @@ export class AuthService {
 
   getUsername(): string {
     return this.user?.name ?? 'guest';
+  }
+
+  private loadFromStorage(): void {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    this.user = stored ? JSON.parse(stored) : null;
+    if (this.user) {
+      this.userService.setUser(this.user);
+    }
   }
 }

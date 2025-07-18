@@ -1,7 +1,7 @@
 <div class="pagination-controls">
   <label>
     Items per page:
-    <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+    <select (change)="onPageSizeChange()" [(ngModel)]="pageSize">
 
       <option [ngValue]="5">5</option>
       <option [ngValue]="10">10</option>
@@ -14,17 +14,16 @@
   </div>
   <div class="page-inline-edit">
     <app-inline-edit
-      [value]="currentPage"
-      type="number"
-      [min]="1"
-      [max]="totalPages"
-      [placeholder]="'Click to edit page...'"
+      (valueChange)="goToPage($event)"
       [displayValue]="'Page ' + currentPage"
-      (valueChange)="goToPage($event)">
+      [max]="totalPages"
+      [min]="1"
+      [placeholder]="'Click to edit page...'"
+      [value]="currentPage"
+      type="number">
     </app-inline-edit>
     <span>of {{ totalPages }}</span>
   </div>
-
 
 
   <div class="page-buttons">

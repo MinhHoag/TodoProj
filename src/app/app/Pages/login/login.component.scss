@@ -59,6 +59,7 @@
     }
   }
 }
+
 .button-group {
   display: flex;
   justify-content: center;
@@ -83,7 +84,8 @@ button {
 
   &:disabled {
     opacity: 0.6;
-    cursor: not-allowed !important;  }
+    cursor: not-allowed !important;
+  }
 }
 
 .tooltip-wrapper {
@@ -117,6 +119,7 @@ button {
 
   }
 }
+
 input.invalid {
   border-color: #e53935;
 }

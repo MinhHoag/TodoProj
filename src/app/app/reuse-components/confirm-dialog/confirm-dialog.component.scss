@@ -1,15 +1,19 @@
-button .border{
+button .border {
   border: 1px solid #ccc !important;
 }
+
 button.mat-button:hover {
   background-color: #f0f0f0;
 }
+
 .mat-raised-button.mat-warn {
   background-color: #f44336; /* default red */
 }
+
 button.mat-raised-button.mat-warn.focused-default {
 
 }
+
 ::ng-deep .mat-mdc-dialog-container {
   border-radius: 16px;
   overflow: hidden; // ensures content follows the border shape
@@ -24,12 +28,13 @@ button.mat-raised-button.mat-warn.focused-default {
 .option {
   background-color: #edfbff;
   font-size: 13px;
-  font-family: Arial  ;
+  font-family: Arial;
   font-weight: bold;
   border: none;
   padding: 4px 8px;
   display: block;
-  border-radius: 4px;cursor: pointer;
+  border-radius: 4px;
+  cursor: pointer;
   font-style: normal;
   text-decoration: none !important;
 }
