@@ -6,11 +6,12 @@ import {User, UserApiService} from '../../helper/api/user-api.service';
 import {AuthService} from '../../helper/auth/auth.service';
 import {HeaderComponent} from '../../navigation/header/header';
 import {UserService} from '../../helper/mode(s)/user/user.service';
+import {ForbiddenNamesDirective} from './forbidden-names.directive';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, ForbiddenNamesDirective],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
   get isUsernameValid(): boolean {
     return this.username.trim().length > 0 && !/\s/.test(this.username);
   }
+
 
   ngOnInit(): void {
     this.userApi.getAllUsers().subscribe(users => {

@@ -3,29 +3,62 @@
 <div class="login-page">
   <h2>Sign In</h2>
 
+  <!-- Username Input with Validation -->
   <input
+    name="username"
     [(ngModel)]="username"
-    [class.invalid]="!isUsernameValid && username.length > 0"
+    #usernameModel="ngModel"
+    required
+    pattern="^\S+$"
+    [appForbiddenNames]="['guest', 'admin']"
+    [class.invalid]="usernameModel.invalid && usernameModel.touched"
     autocomplete="username"
     placeholder="Username (no spaces)"
   />
+  <div class="validation-error" *ngIf="usernameModel.invalid && usernameModel.touched">
+    <div *ngIf="usernameModel.errors?.['required']">Username is required.</div>
+    <div *ngIf="usernameModel.errors?.['pattern']">Username cannot contain spaces.</div>
+    <div *ngIf="usernameModel.errors?.['forbiddenName']">This username is not allowed.</div>
+  </div>
 
+  <!-- Password Input with Validation -->
   <input
+    name="password"
+    type="password"
     [(ngModel)]="password"
+    #passwordModel="ngModel"
+    required
+    minlength="4"
+    [class.invalid]="passwordModel.invalid && passwordModel.touched"
     autocomplete="current-password"
     placeholder="Password"
-    type="password"
   />
+  <div class="validation-error" *ngIf="passwordModel.invalid && passwordModel.touched">
+    <div *ngIf="passwordModel.errors?.['required']">Password is required.</div>
+    <div *ngIf="passwordModel.errors?.['minlength']">
+      Password must be at least 4 characters.
+    </div>
+  </div>
 
+  <!-- General Login Error -->
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
+  <!-- Buttons -->
   <div class="button-group">
-    <button (click)="login()" [disabled]="!isUsernameValid || !password">Log In</button>
+    <button
+      (click)="login()"
+      [disabled]="usernameModel.invalid || passwordModel.invalid"
+    >
+      Log In
+    </button>
 
-    <div [class.disabled]="usernameExists || !isUsernameValid" class="tooltip-wrapper">
+    <div
+      [class.disabled]="usernameExists || usernameModel.invalid || passwordModel.invalid"
+      class="tooltip-wrapper"
+    >
       <button
         (click)="signup()"
-        [disabled]="usernameExists || !isUsernameValid || !password"
+        [disabled]="usernameExists || usernameModel.invalid || passwordModel.invalid"
         class="signup-button"
       >
         Sign Up
