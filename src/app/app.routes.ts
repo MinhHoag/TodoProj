@@ -7,8 +7,7 @@ import { LoginComponent } from './app/Pages/login/login.component';
 import { UserIdGuard } from './app/helper/mode(s)/user/user-id.guard';
 import { UserRedirectGuard } from './app/helper/mode(s)/user/user-redirect.guard';
 import { DummyRedirectComponent } from './app/helper/mode(s)/guest/dummy-redirect.component';
-import {NotFound} from './app/Pages/not-found/not-found'; // <- add this
-
+import {NotFound} from './app/Pages/not-found/not-found';
 export const routes: Routes = [
   // 🔁 Dynamically redirect root based on login
   {

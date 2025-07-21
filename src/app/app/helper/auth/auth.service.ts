@@ -41,4 +41,13 @@ export class AuthService {
   isLoggedIn(): boolean {
     return this.getUserId() !== 'guest';
   }
+  getCurrentUser(): { id: string; name: string } | null {
+    if (!this.user) {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      this.user = stored ? JSON.parse(stored) : null;
+    }
+    return this.user;
+  }
+
+
 }

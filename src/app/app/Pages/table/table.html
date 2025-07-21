@@ -36,7 +36,7 @@
              class="checkbox"
              type="checkbox"/>
     </td>
-    <td>{{ task.createdAt * 1000 | date: 'dd/MM/yyyy HH:mm' }}</td>
+    <td>{{ task.createdAt   | date: 'dd/MM/yyyy HH:mm' }}</td>
     <td colspan="4" style="text-align: right;">
       <button (click)="deleteTask(task)" class="delete-button">🗑</button>
     </td>

@@ -1,17 +1,16 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http'; // ✅ Import this
+import { provideHttpClient } from '@angular/common/http';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { App} from './app/app';
 import { routes } from './app/app.routes';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { getDatabase, provideDatabase } from '@angular/fire/database'; // Adjust path as needed
-
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 bootstrapApplication(App, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(), // ✅ Add this to fix HttpClient injection
+    provideHttpClient(),
     provideFirebaseApp(() =>
       initializeApp({
         projectId: "todoproj-40e90",

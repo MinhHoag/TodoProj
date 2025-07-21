@@ -3,16 +3,15 @@ import {BehaviorSubject} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-  private userId$ = new BehaviorSubject<string>('');   // Numeric ID for API routing
-  private userName$ = new BehaviorSubject<string>(''); // Username for task tagging
-
+  private userId$ = new BehaviorSubject<string>('');
+  private userName$ = new BehaviorSubject<string>('');
   setUser(user: { id: string; name: string }) {
     this.userId$.next(user.id);
     this.userName$.next(user.name);
   }
 
   resetUser(): void {
-    console.log('[UserService] Resetting user');
+    console.log('Logging out');
     this.userId$.next('');
     this.userName$.next('');
   }

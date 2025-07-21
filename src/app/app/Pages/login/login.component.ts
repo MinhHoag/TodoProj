@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
         this.auth.login({id: user.id ?? 'guest', name: user.name});
         this.userService.setUser({id: user.id!, name: user.name});
 
-        // ✅ Navigate using username
         this.router.navigate(['/task-list', user.name]);
       });
     });
@@ -80,12 +79,11 @@ export class LoginComponent implements OnInit {
         this.auth.login({id: user.id ?? 'guest', name: user.name});
         this.userService.setUser({id: user.id!, name: user.name});
 
-        // ✅ Navigate using username
         this.router.navigate(['/task-list', user.name]);
       });
 
       this.existingUsernames.add(user.name.trim().toLowerCase());
-      this.errorMessage = ''; // clear any prior login error
+      this.errorMessage = '';
     });
   }
 }

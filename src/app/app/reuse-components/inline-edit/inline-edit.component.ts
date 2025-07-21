@@ -41,7 +41,6 @@ export class InlineEditComponent {
     if (!this.isChecked) {
       this.localValue = this.value;
       this.editing = true;
-      console.log('Switched to editing mode');
 
       setTimeout(() => {
         this.resizeInput();

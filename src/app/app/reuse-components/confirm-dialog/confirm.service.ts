@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {ConfirmDialogComponent} from './confirm-dialog.component'; // adjust the path
+import {ConfirmDialogComponent} from './confirm-dialog.component';
 import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})

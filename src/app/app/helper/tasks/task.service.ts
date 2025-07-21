@@ -35,15 +35,16 @@ export class TaskService {
   }
 
   getTasks(): Observable<Task[]> {
-    const userId = this.userService.getUserId?.() || this.auth.getUserId?.(); // fallback
+    const userId = this.userService.getUserId?.() || this.auth.getUserId?.();
 
     if (!userId || userId === 'guest') {
-      console.warn('[TaskService] Skipping getTasks(): Invalid userId →', userId);
-      return of([]);
+      const guestTasks = loadGuestTasks();
+      return of(guestTasks);
     }
 
     return this.api.getListByUser(userId);
   }
+
 
   addTask(text: string): Observable<Task> {
     const userId = this.userService.getUserId?.() || this.auth.getUserId?.();
@@ -73,7 +74,6 @@ export class TaskService {
     const userId = this.userService.getUserId();
 
     if (!task.id || task.userId !== userId) {
-      console.warn('[removeTask] Skipping invalid or foreign task:', task);
       return of(void 0);
     }
 

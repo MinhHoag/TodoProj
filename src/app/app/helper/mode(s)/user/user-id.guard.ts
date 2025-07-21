@@ -20,18 +20,31 @@ export class UserIdGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const routeUsername = route.paramMap.get('username');
-    const isGuest = routeUsername === 'guest';
 
     if (!routeUsername) {
       this.router.navigate(['/not-found']);
       return of(false);
     }
 
-    if (isGuest) {
+    // Guest mode check
+    if (routeUsername === 'guest') {
       this.guestService.setGuestMode(true);
       return of(true);
     }
 
+    // If already logged in, verify username matches
+    const currentUser = this.auth.getCurrentUser(); // Assumes auth service stores current user
+    if (currentUser) {
+      if (currentUser.name !== routeUsername) {
+        this.router.navigate(['/not-found']);
+        return of(false);
+      }
+
+      this.guestService.setGuestMode(false);
+      return of(true);
+    }
+
+    // Not logged in yet: fetch all users to verify and auto-login
     return this.userApi.getAllUsers().pipe(
       map(users => {
         const user = users.find(u => u.name === routeUsername);
@@ -41,6 +54,7 @@ export class UserIdGuard implements CanActivate {
           return false;
         }
 
+        // Auto-login and proceed
         this.auth.login({id: user.id!, name: user.name});
         this.userService.setUser({id: user.id!, name: user.name});
         this.guestService.setGuestMode(false);

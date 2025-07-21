@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
-import {CommonModule} from '@angular/common'; // ✅ Required for ngIf/ngFor
+import {CommonModule} from '@angular/common';
 import {AuthService} from '../../helper/auth/auth.service';
 
 @Component({
@@ -8,7 +8,7 @@ import {AuthService} from '../../helper/auth/auth.service';
   standalone: true,
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
-  imports: [RouterModule, CommonModule] // ✅ Add CommonModule
+  imports: [RouterModule, CommonModule]
 })
 export class HeaderComponent implements OnInit {
   userId: string = '';
