@@ -5,6 +5,7 @@ import {BehaviorSubject} from 'rxjs';
 export class UserService {
   private userId$ = new BehaviorSubject<string>('');
   private userName$ = new BehaviorSubject<string>('');
+
   setUser(user: { id: string; name: string }) {
     this.userId$.next(user.id);
     this.userName$.next(user.name);

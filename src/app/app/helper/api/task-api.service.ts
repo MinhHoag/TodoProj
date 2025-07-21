@@ -21,14 +21,14 @@ export class TaskApiService {
   addTask(task: Task): Observable<Task> {
     this.blockIfGuest();
 
-    const routeId = this.userService.getUserId(); // numeric ID
+    const routeId = this.userService.getUserId();
     return this.http.post<Task>(`${this.baseUrl}/user/${routeId}/tasks`, task);
   }
 
   updateTask(task: Task): Observable<Task> {
     this.blockIfGuest();
 
-    const routeId = this.userService.getUserId(); // numeric ID
+    const routeId = this.userService.getUserId();
     return this.http.put<Task>(
       `${this.baseUrl}/user/${routeId}/tasks/${task.id}`,
       task

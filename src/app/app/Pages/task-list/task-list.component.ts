@@ -71,7 +71,7 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-    loadTasks() {
+  loadTasks() {
     this.taskService.getTasks().subscribe(all => {
       this.tasks = sortTasks(all.filter(t => !t.pushed));
       this.applySearch(); // filter based on current query

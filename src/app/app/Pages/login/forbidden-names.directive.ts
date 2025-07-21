@@ -1,5 +1,5 @@
-import { Directive, Input } from '@angular/core';
-import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from '@angular/forms';
+import {Directive, Input} from '@angular/core';
+import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator} from '@angular/forms';
 
 @Directive({
   selector: '[appForbiddenNames]',
@@ -16,6 +16,6 @@ export class ForbiddenNamesDirective implements Validator {
     if (!control.value) return null;
 
     const value = control.value.trim().toLowerCase();
-    return this.forbiddenNames.includes(value) ? { forbiddenName: true } : null;
+    return this.forbiddenNames.includes(value) ? {forbiddenName: true} : null;
   }
 }

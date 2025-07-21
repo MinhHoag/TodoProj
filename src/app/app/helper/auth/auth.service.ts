@@ -30,23 +30,24 @@ export class AuthService {
     return this.user?.name ?? 'guest';
   }
 
-  private loadFromStorage(): void {
-    const stored = localStorage.getItem(this.STORAGE_KEY);
-    this.user = stored ? JSON.parse(stored) : null;
-    if (this.user) {
-      this.userService.setUser(this.user);
-    }
-  }
-
   isLoggedIn(): boolean {
     return this.getUserId() !== 'guest';
   }
+
   getCurrentUser(): { id: string; name: string } | null {
     if (!this.user) {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       this.user = stored ? JSON.parse(stored) : null;
     }
     return this.user;
+  }
+
+  private loadFromStorage(): void {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    this.user = stored ? JSON.parse(stored) : null;
+    if (this.user) {
+      this.userService.setUser(this.user);
+    }
   }
 
 

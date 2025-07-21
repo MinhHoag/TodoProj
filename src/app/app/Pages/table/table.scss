@@ -1,11 +1,11 @@
 table {
-  width: 100%; /* Fill available space */
-  max-width: 100%; /* Prevent overflow beyond container */
+  width: 100%;
+  max-width: 100%;
   border-collapse: collapse;
   font-family: Arial, sans-serif;
   margin: 16px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  table-layout: auto; /* Or 'fixed' for equal-width columns */
+  table-layout: auto;
   word-break: break-word;
 }
 

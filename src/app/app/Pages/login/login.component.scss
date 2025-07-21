@@ -66,15 +66,18 @@
   gap: 12px;
   margin-top: 10px;
 }
-.signup-button{
+
+.signup-button {
   color: #3baac6 !important;
   background-color: white !important;
   border: 2px solid #3baac6 !important;
 }
-  .signup-button:disabled {
+
+.signup-button:disabled {
   opacity: 0.6;
   cursor: not-allowed !important;
 }
+
 button {
   background-color: #3baac6;
   color: white;
